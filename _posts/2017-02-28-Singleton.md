@@ -77,7 +77,7 @@ OC版：
 
 下面我们来看看dispatch\_once\_t与dispatch\_once:
 
-!["dispatch"]()
+!["dispatch_once_t"]()
 
 To help resolve these issues, [The Review Index](https://thereviewindex.com) has launched its 
 

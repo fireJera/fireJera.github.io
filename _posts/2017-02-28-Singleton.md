@@ -77,7 +77,11 @@ OC版：
 
 下面我们来看看dispatch\_once\_t与dispatch\_once:
 
-!["dispatch_once_t"]()
+![dispatch_once_t](https://github.com/Jeremy1221/Jeremy1221.github.io/blob/master/img/dispatch_once_t.png)
+
+自己领悟吧。
+
+再来看看allocWithZone,原来这是个历史遗留问题，当我们调用alloc时最终还是会调用allocWithZone，所以当某人直接调用allocWithZone(谁会装逼这么用？)来创建实例时还是会创建出一个新的实例从而不能保证
 
 To help resolve these issues, [The Review Index](https://thereviewindex.com) has launched its 
 

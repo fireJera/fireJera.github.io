@@ -73,19 +73,72 @@ OC版：
 	}
 看见这些我心里有很多疑问，@synchronized是个嘛东西，原理？dispatch\_once又是干嘛的，allocWithZone又是什么？dispatch\_once\_t？
 
+![???](https://github.com/Jeremy1221/Jeremy1221.github.io/blob/master/img/%3F%3F%3F.gif)
+
 首先我们来看看@synchronized和dispatch\_once，先举个例子，比如现在同时有两个线程(A和B)要使用sharedInstance创建实例，当两个线程同事运行到@synchronized的代码块时，其中一个线程(A)会上锁，然后线程B会进入睡眠直到线程A运行结束，当线程A运行结束时instance已经不是nil了，所以线程B不会再创建。同理，dispatch\_once会保证这段代码只运行一次，所以线程A先运行后，线程B就不会再运行了。[原文戳这里](http://www.cocoachina.com/ios/20160613/16661.html)
 
 下面我们来看看dispatch\_once\_t与dispatch\_once:
 
 ![dispatch_once_t](https://github.com/Jeremy1221/Jeremy1221.github.io/blob/master/img/dispatch_once_t.png)
 
+typedef long dispatch_once_t;
 自己领悟吧。
 
-再来看看allocWithZone,原来这是个历史遗留问题，当我们调用alloc时最终还是会调用allocWithZone，所以当某人直接调用allocWithZone(谁会装逼这么用？)来创建实例时还是会创建出一个新的实例从而不能保证
-
-To help resolve these issues, [The Review Index](https://thereviewindex.com) has launched its 
-
-The public beta was launched in January 2017 with six product categories, which include [Mobiles](https://thereviewindex.com/Mobiles), [Speakers](https://thereviewindex.com/speakers), [Televisions](https://thereviewindex.com/televisions), [Routers](https://thereviewindex.com/routers), [Microwaves](https://thereviewindex.com/microwaves) and [Washing Machines](https://thereviewindex.com/washingmachines) and caters to Indian consumers. Reviews from popular online stores are compiled and reconciled using Neural Network based algorithms, and feature-wise summaries of the aggregated opinion is created.
+再来看看allocWithZone,原来这是个历史遗留问题，当我们调用alloc时最终还是会调用allocWithZone，所以当某人直接调用allocWithZone(谁会装逼这么用？)来创建实例时还是会创建出一个新的实例从而不能保证唯一性。[了解更多点击我](http://blog.csdn.net/jiajiayouba/article/details/44306679)
 
 
+接下来我们看swift版的单例，swift有四种写法：
 
+1.OC翻译版(太丑)
+
+	class Singleton {
+	    class var sharedInstance: Singleton {
+	        struct Static {
+	            static var onceToken: dispatch_once_t = 0
+	            static var instance: Singleton? = nil
+	        }
+	        dispatch_once(&Static.onceToken) {
+	            Static.instance = Singleton()
+	        }
+	        return Static.instance!
+	    }
+	}
+
+swift3.0已经废弃了dispatch_once了好像，所以上述方法已经不能通过编译了，不过我还是觉得可以拿出来说一下
+
+2.结构体方法(1的优化)
+
+	class Singleton {
+	    class var sharedInstance: Singleton {
+	        struct Static {
+	            static let instance = Singleton()
+	        }
+	        return Static.instance
+	    }
+	}
+
+3.全局变量方法
+
+	private let instance = Singleton()
+	class Singleton {
+	    class var sharedInstance: Singleton {
+	        return instance
+	    }
+	}
+	
+现在，你可能会有疑问：为何看不到dispatch_once？根据Apple Swift博客中的说法，以上方法都自动满足dispatch_once规则。这里有个帖子可以证明dispatch_once规则一直在起作用。
+
+4.最终方法
+
+	class Singleton {
+	    static let sharedInstance = Singleton()
+	}
+
+最后不要忘记设置初始化方法为私有，防止别人直接调用init方法来创建实例。
+
+	class Singleton {
+	    static let sharedInstance = Singleton()
+	    private init() {}
+	}
+
+看到这里我又有了疑问，这个class和static修饰词是干嘛的呢(基础太差😂)

@@ -200,20 +200,84 @@
 </code></pre>
 </div>
 
+<p><img src="https://github.com/Jeremy1221/Jeremy1221.github.io/blob/master/img/%3F%3F%3F.gif" alt="???" /></p>
+
 <p>首先我们来看看@synchronized和dispatch_once，先举个例子，比如现在同时有两个线程(A和B)要使用sharedInstance创建实例，当两个线程同事运行到@synchronized的代码块时，其中一个线程(A)会上锁，然后线程B会进入睡眠直到线程A运行结束，当线程A运行结束时instance已经不是nil了，所以线程B不会再创建。同理，dispatch_once会保证这段代码只运行一次，所以线程A先运行后，线程B就不会再运行了。<a href="http://www.cocoachina.com/ios/20160613/16661.html">原文戳这里</a></p>
 
 <p>下面我们来看看dispatch_once_t与dispatch_once:</p>
 
 <p><img src="https://github.com/Jeremy1221/Jeremy1221.github.io/blob/master/img/dispatch_once_t.png" alt="dispatch_once_t" /></p>
 
-<p>自己领悟吧。</p>
+<p>typedef long dispatch_once_t;
+自己领悟吧。</p>
 
-<p>再来看看allocWithZone,原来这是个历史遗留问题，当我们调用alloc时最终还是会调用allocWithZone，所以当某人直接调用allocWithZone(谁会装逼这么用？)来创建实例时还是会创建出一个新的实例从而不能保证</p>
+<p>再来看看allocWithZone,原来这是个历史遗留问题，当我们调用alloc时最终还是会调用allocWithZone，所以当某人直接调用allocWithZone(谁会装逼这么用？)来创建实例时还是会创建出一个新的实例从而不能保证唯一性。<a href="http://blog.csdn.net/jiajiayouba/article/details/44306679">了解更多点击我</a></p>
 
-<p>To help resolve these issues, <a href="https://thereviewindex.com">The Review Index</a> has launched its</p>
+<p>接下来我们看swift版的单例，swift有四种写法：</p>
 
-<p>The public beta was launched in January 2017 with six product categories, which include <a href="https://thereviewindex.com/Mobiles">Mobiles</a>, <a href="https://thereviewindex.com/speakers">Speakers</a>, <a href="https://thereviewindex.com/televisions">Televisions</a>, <a href="https://thereviewindex.com/routers">Routers</a>, <a href="https://thereviewindex.com/microwaves">Microwaves</a> and <a href="https://thereviewindex.com/washingmachines">Washing Machines</a> and caters to Indian consumers. Reviews from popular online stores are compiled and reconciled using Neural Network based algorithms, and feature-wise summaries of the aggregated opinion is created.</p>
+<p>1.OC翻译版(太丑)</p>
 
+<div class="highlighter-rouge"><pre class="highlight"><code>class Singleton {
+    class var sharedInstance: Singleton {
+        struct Static {
+            static var onceToken: dispatch_once_t = 0
+            static var instance: Singleton? = nil
+        }
+        dispatch_once(&amp;Static.onceToken) {
+            Static.instance = Singleton()
+        }
+        return Static.instance!
+    }
+}
+</code></pre>
+</div>
+
+<p>swift3.0已经废弃了dispatch_once了好像，所以上述方法已经不能通过编译了，不过我还是觉得可以拿出来说一下</p>
+
+<p>2.结构体方法(1的优化)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>class Singleton {
+    class var sharedInstance: Singleton {
+        struct Static {
+            static let instance = Singleton()
+        }
+        return Static.instance
+    }
+}
+</code></pre>
+</div>
+
+<p>3.全局变量方法</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>private let instance = Singleton()
+class Singleton {
+    class var sharedInstance: Singleton {
+        return instance
+    }
+}
+</code></pre>
+</div>
+
+<p>现在，你可能会有疑问：为何看不到dispatch_once？根据Apple Swift博客中的说法，以上方法都自动满足dispatch_once规则。这里有个帖子可以证明dispatch_once规则一直在起作用。</p>
+
+<p>4.最终方法</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>class Singleton {
+    static let sharedInstance = Singleton()
+}
+</code></pre>
+</div>
+
+<p>最后不要忘记设置初始化方法为私有，防止别人直接调用init方法来创建实例。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>class Singleton {
+    static let sharedInstance = Singleton()
+    private init() {}
+}
+</code></pre>
+</div>
+
+<p>看到这里我又有了疑问，这个class和static修饰词是干嘛的呢(基础太差😂)</p>
 
 		
 	</div>

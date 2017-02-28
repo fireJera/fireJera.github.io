@@ -1,5 +1,5 @@
 # Site settings
-title: Monochrome | A minimal, responsive Jekyll blog theme
+title: 一步一个脚印
 description: "A minimal, responsive, ready to use blog template, built with Jekyll."
 url: "http://www.thereviewindex.github.io/monochrome"
 author:
@@ -8,7 +8,7 @@ author:
   url: "https://thereviewindex.com"
 
 # Build settings
-baseurl: https://jeremy1221.github.io/ # Change this to your relative path (ex: /blog/), or leave just a /
+baseurl: / # Change this to your relative path (ex: /blog/), or leave just a /
 markdown: kramdown
 source: .
 destination: ./_site

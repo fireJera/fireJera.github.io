@@ -4,7 +4,7 @@
  <title>Monochrome | A minimal, responsive Jekyll blog theme</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <id>http://localhost:4000</id>
- <updated>2017-02-23T20:29:47+05:30</updated>
+ <updated>2017-02-28T16:52:50+08:00</updated>
  <author>
    <name>The Review Index</name>
    <uri>https://thereviewindex.com</uri>
@@ -14,101 +14,11 @@
  
 
  <entry>
-   <title>TheReviewIndex | Unbiased User Review Summaries | Monochrome</title>
-   <link href="http://localhost:4000/thereviewindex-introduction"/>
-   <id>http://localhost:4000/thereviewindex-introduction</id>
-   <updated>2017-02-18T00:00:00+05:30</updated>
-   <content type="html">&lt;p&gt;The internet is a source of a humongous amount of unstructured content for all sorts of products, in the form of blogs, videos, user and expert reviews, etc. It is almost impossible for anyone to scour all of this disparate data, with contradictory opinions, and thereafter make a correct, or...</content>
- </entry>
-
- 
-
- <entry>
-   <title>Typography Example | Monochrome</title>
-   <link href="http://localhost:4000/typography-example"/>
-   <id>http://localhost:4000/typography-example</id>
-   <updated>2017-02-14T00:00:00+05:30</updated>
-   <content type="html">&lt;p&gt;&lt;img src=&quot;/monochrome/img/img-test.png&quot; alt=&quot;Test&quot; title=&quot;Test&quot; /&gt; Lorem ipsum dolor sit amet, &lt;a href=&quot;http://www.example.com&quot;&gt;consectetur adipisicing&lt;/a&gt; elit. Id, aliquam magni et officiis nemo nihil aliquid placeat alias. Eum voluptates ducimus, nobis ex illum laboriosam quidem corrupti impedit ratione in voluptatum amet beatae facilis temporibus voluptate praesentium voluptatibus! At ab, iusto error amet eveniet...</content>
- </entry>
-
- 
-
- <entry>
-   <title>Code Example</title>
-   <link href="http://localhost:4000/code-example"/>
-   <id>http://localhost:4000/code-example</id>
-   <updated>2017-02-12T00:00:00+05:30</updated>
-   <content type="html">&lt;p&gt;To insert highlight code inside of a post, it’s enough to use some specific tags, has directly described into the &lt;a href=&quot;http://jekyllrb.com/docs/templates/#code-snippet-highlighting&quot;&gt;Jekyll documentation&lt;/a&gt;. In this way the code will be included into a &lt;code class=&quot;highlighter-rouge&quot;&gt;.highlight&lt;/code&gt; CSS class and will be highlight according to the &lt;a href=&quot;https://github.com/mojombo/tpw/blob/master/css/syntax.css&quot;&gt;syntax.scss&lt;/a&gt; file. This is the...</content>
- </entry>
-
- 
-
- <entry>
-   <title>This is the eigth test post.</title>
-   <link href="http://localhost:4000/test-post-8"/>
-   <id>http://localhost:4000/test-post-8</id>
-   <updated>2017-02-11T00:00:00+05:30</updated>
-   <content type="html">&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est optio ut impedit architecto iusto tempore rem, voluptates sed magni nisi corrupti praesentium voluptatum harum expedita temporibus ipsam, odit ad distinctio! Labore cupiditate distinctio facere earum, iste! Reiciendis possimus voluptatum explicabo corporis ab. Ex adipisci laudantium mollitia vel optio deserunt...</content>
- </entry>
-
- 
-
- <entry>
-   <title>This is the seventh test post.</title>
-   <link href="http://localhost:4000/test-post-7"/>
-   <id>http://localhost:4000/test-post-7</id>
-   <updated>2017-02-11T00:00:00+05:30</updated>
-   <content type="html">&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est optio ut impedit architecto iusto tempore rem, voluptates sed magni nisi corrupti praesentium voluptatum harum expedita temporibus ipsam, odit ad distinctio! Labore cupiditate distinctio facere earum, iste! Reiciendis possimus voluptatum explicabo corporis ab. Ex adipisci laudantium mollitia vel optio deserunt...</content>
- </entry>
-
- 
-
- <entry>
-   <title>This is the sixth test post.</title>
-   <link href="http://localhost:4000/test-post-6"/>
-   <id>http://localhost:4000/test-post-6</id>
-   <updated>2017-02-11T00:00:00+05:30</updated>
-   <content type="html">&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est optio ut impedit architecto iusto tempore rem, voluptates sed magni nisi corrupti praesentium voluptatum harum expedita temporibus ipsam, odit ad distinctio! Labore cupiditate distinctio facere earum, iste! Reiciendis possimus voluptatum explicabo corporis ab. Ex adipisci laudantium mollitia vel optio deserunt...</content>
- </entry>
-
- 
-
- <entry>
-   <title>This is the fifth test post</title>
-   <link href="http://localhost:4000/test-post-5"/>
-   <id>http://localhost:4000/test-post-5</id>
-   <updated>2017-02-11T00:00:00+05:30</updated>
-   <content type="html">&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est optio ut impedit architecto iusto tempore rem, voluptates sed magni nisi corrupti praesentium voluptatum harum expedita temporibus ipsam, odit ad distinctio! Labore cupiditate distinctio facere earum, iste! Reiciendis possimus voluptatum explicabo corporis ab. Ex adipisci laudantium mollitia vel optio deserunt...</content>
- </entry>
-
- 
-
- <entry>
-   <title>This is the forth test post.</title>
-   <link href="http://localhost:4000/test-post-4"/>
-   <id>http://localhost:4000/test-post-4</id>
-   <updated>2017-02-11T00:00:00+05:30</updated>
-   <content type="html">&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est optio ut impedit architecto iusto tempore rem, voluptates sed magni nisi corrupti praesentium voluptatum harum expedita temporibus ipsam, odit ad distinctio! Labore cupiditate distinctio facere earum, iste! Reiciendis possimus voluptatum explicabo corporis ab. Ex adipisci laudantium mollitia vel optio deserunt...</content>
- </entry>
-
- 
-
- <entry>
-   <title>This is the third test post.</title>
-   <link href="http://localhost:4000/test-post-3"/>
-   <id>http://localhost:4000/test-post-3</id>
-   <updated>2017-02-11T00:00:00+05:30</updated>
-   <content type="html">&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est optio ut impedit architecto iusto tempore rem, voluptates sed magni nisi corrupti praesentium voluptatum harum expedita temporibus ipsam, odit ad distinctio! Labore cupiditate distinctio facere earum, iste! Reiciendis possimus voluptatum explicabo corporis ab. Ex adipisci laudantium mollitia vel optio deserunt...</content>
- </entry>
-
- 
-
- <entry>
-   <title>This is second test post.</title>
-   <link href="http://localhost:4000/test-post-2"/>
-   <id>http://localhost:4000/test-post-2</id>
-   <updated>2017-02-11T00:00:00+05:30</updated>
-   <content type="html">&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est optio ut impedit architecto iusto tempore rem, voluptates sed magni nisi corrupti praesentium voluptatum harum expedita temporibus ipsam, odit ad distinctio! Labore cupiditate distinctio facere earum, iste! Reiciendis possimus voluptatum explicabo corporis ab. Ex adipisci laudantium mollitia vel optio deserunt...</content>
+   <title>Singleton</title>
+   <link href="http://localhost:4000/Singleton"/>
+   <id>http://localhost:4000/Singleton</id>
+   <updated>2017-02-28T00:00:00+08:00</updated>
+   <content type="html">&lt;p&gt;昨天去面试遇到了一些平时很常见但是从没花过心思的题，然后回来整理了一下，没想到万恶的csdn把我写了一下午的心得根本没有保存，只留下一行寥寥无几的文字在那赤裸裸的嘲讽我。&lt;/p&gt; &lt;p&gt;言归正传，下面首先讲一讲singleton的写法：&lt;/p&gt; &lt;p&gt;OC版：&lt;/p&gt; &lt;p&gt;1.&lt;/p&gt; &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;@implementation&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Singleton&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Singleton&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;instance&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;instancetype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sharedInstance&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;@synchronized&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;instance&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span...</content>
  </entry>
 
  

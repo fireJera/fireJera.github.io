@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Meta -->
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+	<meta name="generator" content="Jekyll">
+
+	<title>Singleton</title>
+  <meta name="description" content="This is an introduction to singleton in ios.">
+
+	<!-- CSS & fonts -->
+	<link rel="stylesheet" href="/jeremy1221.github.io/css/main.css">
+
+	<!-- RSS -->
+	<link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+
+</head>
+
+
+<body>
+	<div id="wrap">
+	  	
+	  	<!-- Navigation -->
+	  	<nav id="nav">
+	<div id="nav-list">
+		<a href="/jeremy1221.github.io/">Home</a>
+
+		<!-- Nav pages -->
+	  
+	    
+	  
+	    
+	      <a href="/jeremy1221.github.io/about" title="About Monochrome">About Monochrome</a>
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+    
+    <!-- Nav links -->
+	  <a href="https://github.com/thereviewindex/monochrome/archive/master.zip">Download</a>
+<a href="https://github.com/thereviewindex/monochrome">Project on Github</a>
+
+
+	</div>
+  
+  <!-- Nav footer -->
+	
+	  <footer>
+	
+	<span>version 1.0.0</span>
+
+</footer>
+	
+
+</nav>
+
+    
+    <!-- Icon menu -->
+	  <a id="nav-menu">
+	  	<div id="menu"></div>
+	  </a>
+
+      <!-- Header -->
+      
+        <header id="header" class="parent justify-spaceBetween">
+  <div class="inner w100 relative">
+    <span class="f-left">  
+      <a href="/jeremy1221.github.io/">
+        <h1>
+          <span>mono</span>chrome
+        </h1>
+      </a>
+    </span>
+    <span id="nav-links" class="absolute right bottom">
+      <!-- Nav pages -->
+	    
+	      
+	    
+	      
+	        <a href="/jeremy1221.github.io/about" title="About Monochrome">About Monochrome</a>
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+      
+      <!-- Nav links -->
+	    <a href="https://github.com/thereviewindex/monochrome/archive/master.zip">Download</a>
+<a href="https://github.com/thereviewindex/monochrome">Project on Github</a>
+
+
+    </span>
+  </div>
+</header>
+
+
+
+
+      
+
+    <!-- Main content -->
+	  <div id="container">
+		  
+		<main>
+
+			<article id="post-page">
+	<h2>singleton</h2>		
+	<time datetime="2017-02-28T00:00:00+08:00" class="by-line">28 Feb 2017</time>
+	<div class="content">
+
+		<p>昨天去面试遇到了一些平时很常见但是从没花过心思的题，然后回来整理了一下，没想到万恶的csdn把我写了一下午的心得根本没有保存，只留下一行寥寥无几的文字在那赤裸裸的嘲讽我。</p>
+
+<p>言归正传，下面首先讲一讲singleton的写法：</p>
+
+<p>OC版：</p>
+
+<p>1.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">@implementation</span> <span class="nc">Singleton</span>
+<span class="k">static</span> <span class="n">Singleton</span> <span class="o">*</span><span class="n">instance</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+
+<span class="k">+</span><span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="n">sharedInstance</span> <span class="p">{</span>
+    <span class="k">@synchronized</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">instance</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Singleton</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">init</span><span class="p">];</span>
+            <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">+</span><span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="n">allocWithZone</span><span class="o">:</span><span class="p">(</span><span class="k">struct</span> <span class="n">_NSZone</span> <span class="o">*</span><span class="p">)</span><span class="n">zone</span> <span class="p">{</span>
+    <span class="k">@synchronized</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">instance</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="nf">allocWithZone</span><span class="p">:</span> <span class="n">zone</span><span class="p">];</span>
+            <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">-</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="n">copyWithZone</span><span class="o">:</span><span class="p">(</span><span class="n">NSZone</span> <span class="o">*</span><span class="p">)</span><span class="n">zone</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>2.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">@implementation</span> <span class="nc">Singleton</span>
+<span class="k">static</span> <span class="n">Singleton</span> <span class="o">*</span><span class="n">instance</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+
+<span class="k">+</span><span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">sharedInstance</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">instance</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Singleton</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">init</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">+</span><span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">allocWithZone</span><span class="o">:</span><span class="p">(</span><span class="k">struct</span> <span class="n">_NSZone</span> <span class="o">*</span><span class="p">)</span><span class="n">zone</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">instance</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="nf">allocWithZone</span><span class="p">:</span><span class="n">zone</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">-</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="n">copyWithZone</span><span class="o">:</span><span class="p">(</span><span class="n">NSZone</span> <span class="o">*</span><span class="p">)</span><span class="n">zone</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">-</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="n">mutableCopyWithZone</span><span class="o">:</span><span class="p">(</span><span class="n">NSZone</span> <span class="o">*</span><span class="p">)</span><span class="n">zone</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+<span class="p">}</span> <span class="err">看见这些我心里有很多疑问，@synchronized是个嘛东西，原理？</span><span class="n">dispatch</span><span class="err">\</span><span class="n">_once</span><span class="err">又是干嘛的，</span><span class="n">allocWithZone</span><span class="err">又是什么？</span><span class="n">dispatch</span><span class="err">\</span><span class="n">_once</span><span class="err">\</span><span class="n">_t</span><span class="err">？</span>
+</code></pre>
+</div>
+
+<p>首先我们来看看@synchronized和dispatch_once，先举个例子，比如现在同时有两个线程(A和B)要使用sharedInstance创建实例，当两个线程同事运行到@synchronized的代码块时，其中一个线程(A)会上锁，然后线程B会进入睡眠直到线程A运行结束，当线程A运行结束时instance已经不是nil了，所以线程B不会再创建。同理，dispatch_once会保证这段代码只运行一次，所以线程A先运行后，线程B就不会再运行了。<a href="http://www.cocoachina.com/ios/20160613/16661.html">原文戳这里</a></p>
+
+<p>下面我们来看看dispatch_once_t与dispatch_once:</p>
+
+<p><img src="" alt="&quot;dispatch&quot;" /></p>
+
+<p>To help resolve these issues, <a href="https://thereviewindex.com">The Review Index</a> has launched its</p>
+
+<p>The public beta was launched in January 2017 with six product categories, which include <a href="https://thereviewindex.com/Mobiles">Mobiles</a>, <a href="https://thereviewindex.com/speakers">Speakers</a>, <a href="https://thereviewindex.com/televisions">Televisions</a>, <a href="https://thereviewindex.com/routers">Routers</a>, <a href="https://thereviewindex.com/microwaves">Microwaves</a> and <a href="https://thereviewindex.com/washingmachines">Washing Machines</a> and caters to Indian consumers. Reviews from popular online stores are compiled and reconciled using Neural Network based algorithms, and feature-wise summaries of the aggregated opinion is created.</p>
+
+
+		
+	</div>
+</article>
+
+
+
+	  </main>
+		
+		  <!-- Pagination links -->
+      
+
+	  </div>
+	    
+	    <!-- Footer -->
+	    <footer><span>@2017 - Monochrome</span></footer>
+
+
+	    <!-- Script -->
+      <script src="/jeremy1221.github.io/js/main.js"></script>	
+
+
+	</div>
+</body>
+</html>

@@ -10,7 +10,7 @@ header: singleton
 
 OC版：
 
-1.
+1.线程锁方式
 
 	@implementation Singleton
 	static Singleton *instance = nil;
@@ -39,7 +39,7 @@ OC版：
 	    return self;
 	}
 
-2.
+2.dispatch_once
 
 	@implementation Singleton
 	static Singleton *instance = nil;
@@ -71,7 +71,7 @@ OC版：
 	-(id)mutableCopyWithZone:(NSZone *)zone {
 	    return instance;
 	}
-看见这些我心里有很多疑问，@synchronized是个嘛东西，原理？dispatch\_once又是干嘛的，allocWithZone又是什么？dispatch\_once\_t？
+看见这些我心里有很多疑问，@synchronized是个嘛东西，原理？dispatch_once又是干嘛的，allocWithZone又是什么？dispatch_once_t？
 
 ![???](https://github.com/Jeremy1221/Jeremy1221.github.io/blob/master/img/%3F%3F%3F.gif)
 
@@ -145,4 +145,4 @@ swift3.0已经废弃了dispatch_once了好像，所以上述方法已经不能�
 
 ![static&class](https://github.com/Jeremy1221/Jeremy1221.github.io/blob/master/img/static%26class.png)
 
-在类(class)中class和static是用来修饰computed property和stored property的，在我的测试中，两个效果是一样的，用class或static修饰后只能通过类名来访问，不能通过实例（对象）来访问。而在结构体或者枚举中只能用static。protocol中也可以用class。所以我觉得static可以代替class。至于computed property和stored property的作用，前者是用来计算的不直接存储值，而后者是用来存储值的。
+在类(class)中class和static是用来修饰computed property和stored property的，在我的测试中，两个效果是一样的，用class或static修饰后只能通过类名来访问，不能通过实例（对象）来访问。而在结构体或者枚举中只能用static。protocol中也可以用class。所以我觉得static完全可以代替class。至于computed property和stored property的作用，前者是用来计算的不直接存储值，而后者是用来存储值的。

@@ -71,6 +71,7 @@ OC版：
 	-(id)mutableCopyWithZone:(NSZone *)zone {
 	    return instance;
 	}
+
 看见这些我心里有很多疑问，@synchronized是个嘛东西，原理？dispatch_once又是干嘛的，allocWithZone又是什么？dispatch_once_t？
 
 ![???](https://jeremy1221.github.io/img/%3F%3F%3F.gif)

@@ -146,4 +146,32 @@ swift3.0已经废弃了dispatch_once了好像，所以上述方法已经不能�
 
 ![static&class](https://jeremy1221.github.io/img/static%26class.png)
 
-在类(class)中class和static是用来修饰computed property和stored property的，在我的测试中，两个效果是一样的，用class或static修饰后只能通过类名来访问，不能通过实例（对象）来访问。而在结构体或者枚举中只能用static。protocol中也可以用class。所以我觉得static完全可以代替class。至于computed property和stored property的作用，前者是用来计算的不直接存储值，而后者是用来存储值的。
+在类(class)中class和static是用来修饰computed property和stored property的，在我的测试中，两个效果是一样的，用class或static修饰后只能通过类名来访问，不能通过实例（对象）来访问。而在结构体或者枚举中只能用static。protocol中也可以用class。但是static修饰的属性不支持子类进行重定义，class修饰的属性支持子类重定义。至于computed property和stored property的作用，前者是用来计算的不直接存储值，而后者是用来存储值的。
+
+类型属性语法
+
+在 C 或 Objective-C 中，与某个类型关联的静态常量和静态变量，是作为全局（global）静态变量定义的。但是在 Swift 中，类型属性是作为类型定义的一部分写在类型最外层的花括号内，因此它的作用范围也就在类型支持的范围内。
+
+使用关键字 static 来定义类型属性。在为类定义计算型类型属性时，可以改用关键字 class 来支持子类对父类的实现进行重写。下面的例子演示了存储型和计算型类型属性的语法：
+
+	struct SomeStructure {
+	    static var storedTypeProperty = "Some value."
+	    static var computedTypeProperty: Int {
+	        return 1
+	    }
+	}
+	enum SomeEnumeration {
+	    static var storedTypeProperty = "Some value."
+	    static var computedTypeProperty: Int {
+	        return 6
+	    }
+	}
+	class SomeClass {
+	    static var storedTypeProperty = "Some value."
+	    static var computedTypeProperty: Int {
+	        return 27
+	    }
+	    class var overrideableComputedTypeProperty: Int {
+	        return 107
+	    }
+	}

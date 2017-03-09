@@ -15,5 +15,5 @@ header: today interveiew summary
 6. get body中能否添加数据
 7. runtime
 8. UIButton add block(closure)
-9. git
+9. git(add、commit、push)
 10. 支付宝sdk安全

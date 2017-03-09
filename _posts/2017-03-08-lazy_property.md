@@ -5,7 +5,7 @@ Go as far as you can see; when you get there you'll be able to see farther.
 ---
 title: Today stack overflow harvest 
 description: a question commit in the stack overflow today with no answer.
-#header: 今天stack overflow遇到的一个问题
+header: 今天stack overflow遇到的一个问题
 ---
 
 lazy property with UIView subclass

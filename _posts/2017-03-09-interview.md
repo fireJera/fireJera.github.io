@@ -738,3 +738,14 @@ add是选择提交哪些文件，可以不选择不想提交的文件。
 
 10. 支付宝sdk安全
 11. http状态码 200 400 500
+12. 应用里有哪几个文件夹，iTunes会保存的是哪个文件夹
+
+Documents: 最常用的目录，iTunes同步该应用时会同步此文件夹中的内容，适合存储重要数据。
+Library/Caches: iTunes不会同步此文件夹，适合存储体积大，不需要备份的非重要数据。
+Library/Preferences: iTunes同步该应用时会同步此文件夹中的内容，通常保存应用的设置信息。
+
+13. gcd nsoperationqueue thread(区别)各有什么优势
+14. tableview的重用，会有什么问题会导致卡顿
+15. 对OC的理解
+16. 控制链传递
+17. 动画

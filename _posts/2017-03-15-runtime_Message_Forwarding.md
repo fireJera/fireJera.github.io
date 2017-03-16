@@ -81,6 +81,8 @@ second:
 	-(id)forwardingTargetForSelector:(SEL)aSelector {
 		if (aSelector == @selector(test)) {
 			return [[Diplomat alloc] init];
+			//class method
+			//return NSClassFromString(@"Class name");
 		}
 		return nil;
 	}
@@ -108,8 +110,8 @@ third:
 The difference between the three:
 
 1. the three is called in order.
-2. class_addMethod should be invoked in method 1
-3. Method 2 only forward to 1 object.
+2. class_addMethod should be invoked in method 1, it gives u a first chance to handle message self by add method.
+3. Method 2 only forward to 1 object. It gives a second chance to let another object to handle message.
 4. Method 3 can forward to multiple objects.
 
 If all the 3 didn't handle the message.Then throw err in the method doesNotRecognizeSelector.
@@ -140,8 +142,10 @@ I think it's relative simple, so I put id here.
 	        //judge the method will be swizlling is existed
 	        BOOL didAddMethod = class_addMethod(class, originalSelector, method_getImplementation(swizzlingMethod), method_getTypeEncoding(swizzlingMethod));
 	        if (didAddMethod) {
+	            //This way exchange method directly
 	            class_replaceMethod(class, swizzlingSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));
 	        } else {
+	            //This way exchange implemention indirect
 	            method_exchangeImplementations(originalMethod, swizzlingMethod);
 	        }
 	    });

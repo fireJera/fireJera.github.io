@@ -1,7 +1,7 @@
 ---
-title: Runtime\:Message Forwarding
+title: Runtime-Message Forwarding
 description: How do i learn runtime
-header: Runtime\:Message Forwarding
+header: Runtime-Message Forwarding
 ---
 
 The starting point of all achievement is desire.

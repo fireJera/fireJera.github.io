@@ -87,11 +87,22 @@ second:
 	
 third: 
 	
-	-(id)forwardingTargetForSelector:(SEL)aSelector {
-    if (aSelector == @selector(test)) {
-        return [[Diplomat alloc] init];
-    }
-    return nil;
+	- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector {
+	    NSLog(@"methodSignatureForSelector");
+	    NSString * sel = NSStringFromSelector(aSelector);
+	    if ([sel isEqualToString:@"test"]) {
+	        return [NSMethodSignature signatureWithObjCTypes: "v@:"];
+	    }
+	    return [super methodSignatureForSelector:aSelector];
+	}
+	
+	-(void)forwardInvocation:(NSInvocation *)anInvocation {
+	    NSLog(@"forwardInvocation");
+	    SEL selector = [anInvocation selector];
+	    Diplomat * dioplmat = [[Diplomat alloc] init];
+	    if ([dioplmat respondsToSelector:selector]) {
+	        [anInvocation invokeWithTarget:dioplmat];
+	    }
 	}
 	
 The difference between the three:

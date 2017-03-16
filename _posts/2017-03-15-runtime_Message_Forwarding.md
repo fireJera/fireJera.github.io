@@ -126,7 +126,7 @@ I think it's relative simple, so I put id here.
 	        SEL swizzlingSelector = @selector(myViewWillAppear:);
 	        Method originalMethod = class_getInstanceMethod(class, originalSelector);
 	        Method swizzlingMethod = class_getInstanceMethod(class, swizzlingSelector);
-	        //judge the methdo will be swizlling is existed
+	        //judge the method will be swizlling is existed
 	        BOOL didAddMethod = class_addMethod(class, originalSelector, method_getImplementation(swizzlingMethod), method_getTypeEncoding(swizzlingMethod));
 	        if (didAddMethod) {
 	            class_replaceMethod(class, swizzlingSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));
@@ -144,9 +144,59 @@ I think it's relative simple, so I put id here.
 
 >NOTE:
 >
->1. swizzling should be invoked in load method.OC automatically calling two class method +load and +initialize in runtime.+load will be invoked when class initial load(会在初始加载时调用), +initialize will be called by lazy.If program don't send message to a class or its subclass, then +initialize will never be called. So we shoudl put it in +load.
+>1. swizzling should be invoked in load method.OC automatically calling two class method +load and +initialize in runtime.+load will be invoked when class initial load(会在初始加载时调用), +initialize will be called by lazy.If program don't send message to a class or its subclass, then +initialize will never be called. So we should put it in +load.
 >
 >2. swizzling should do in dispatch_once.Because double run will turn back original status before swizzling.
 >
 >3. Don't add [super load] in load, if there two class inherit the class.If they all do [super init], it will be the same as above.
->
+
+
+swift method swizzling:
+
+	public extension DispatchQueue {
+   	private static var _onceTracker = [String]()
+    
+    /**
+    Executes a block of code, associated with an unique token. The code is thread safe and will only execute the code once even in the presence of multithread calls.
+     
+     - parameter token: A unique reverse DNS style name such as com.vectorform.<name> or a GUID
+     - parameter block: Block to execute once
+    */
+    
+    public class func once(token: String, block: () -> Void) {
+        objc_sync_enter(self)
+        defer {
+            objc_sync_exit(self)
+        }
+        if _onceTracker.contains(token) {
+            return
+        }
+        
+        _onceTracker.append(token)
+        block()
+    }
+	}
+
+	public extension DispatchQueue {
+   	private static var _onceTracker = [String]()
+    
+    /**
+    Executes a block of code, associated with an unique token. The code is thread safe and will only execute the code once even in the presence of multithread calls.
+     
+     - parameter token: A unique reverse DNS style name such as com.vectorform.<name> or a GUID
+     - parameter block: Block to execute once
+    */
+    
+    public class func once(token: String, block: () -> Void) {
+        objc_sync_enter(self)
+        defer {
+            objc_sync_exit(self)
+        }
+        if _onceTracker.contains(token) {
+            return
+        }
+        
+        _onceTracker.append(token)
+        block()
+    }
+}

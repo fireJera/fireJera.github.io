@@ -748,4 +748,12 @@ Library/Preferences: iTunes同步该应用时会同步此文件夹中的内容�
 14. tableview的重用，会有什么问题会导致卡顿
 15. 对OC的理解
 16. 控制链传递
+
+APPDelegate->UIApplication->UIWindow->UIViewController->UIView->Subviews.
+
+	- (nullable UIView *)hitTest:(CGPoint)point withEvent:(nullable UIEvent *)event;   // recursively calls -pointInside:withEvent:. point is in the receiver's coordinate system
+	- (BOOL)pointInside:(CGPoint)point withEvent:(nullable UIEvent *)event;   // default returns YES if point is in bounds
+
+方法1返回响应时间的对象，2返回触摸点点是否在UIView的范围内。
+
 17. 动画

@@ -780,6 +780,31 @@ GCD:基于C语言并且GCD也是目前苹果官方比较推荐的方式（它充
 
 会创建超过屏幕展示范围上下各一个缓冲数量的cell，移动到屏幕外的范围，就是保存的缓存容器(NSSet、NSArray)中，然后将要移动到屏幕展示的时候会尝试从容器中取出cell，如果容器为空时则会新建一个cell。导致卡顿的常见问题有当cell高度可变时的高度计算和复杂cell的绘制比如圆角图片等。
 
+1. 行高一定要缓存！！！ heightForRowAtIndexPath:是调用最频繁的方法
+2. 不要动态创建子视图 先建后hidden
+3. 所有的子视图都应该添加到 contentView 上 
+4. 所有的子视图都必须指定背景颜色 当从某个控制器A跳转到下一个控制器B时,若B控制器的view未设置背景颜色,跳转时会有卡顿现象,cell也一样,若控件未指定背景颜色,会影响tableView滚动的流畅度.
+5. 所有的颜色都不要使用 alpha 所有的颜色都不要使用 alpha 因为控件如有透明度,会显示底部控件的部分轮廓,系统在显示cell时,需要计算各控件间的叠加面积,颜色的透明度等;但如果所有控件颜色不透明,则不需要耗费性能去计算,能节省大量时间.
+6. cell 栅格化：是将 cell 中的所有内容，生成一张独立的图像,在屏幕滚动时，只显示图像 设置属性 self.layer.shouldRasterize = YES;即可 栅格化的同时必须指定分辨率，否则默认使用 1倍的scale 生成图像！ 需要设置 self.layer.rasterizationScale = [UIScreen mainScreen].scale;
+7. 异步绘制 如果 cell 比较复杂，可以设置cell图层的属性 self.layer.drawsAsynchronously = YES;
+8. tableview加载图片的时候使用lazy(懒加载)模式和异步加载模式。
+Tableview加载图片的时候使用lazy(懒加载)模式和异步加载模式 举个栗子,当我们在用新闻类的App时,滑动cell时看新闻时,并不是所有的都是我们感兴趣的,有时候我们只是很快的滑过,想要快速的略过不喜欢的内容,但实际上只要滑动经过了的cell中的图片就开始加载了,这样用户使用起来会出现不同程度的卡顿,用户体验不太好,而且浪费内存和流量 此时,我们就可以利用lazy加载技术,当界面滑动或者滑动减速的时候,都不进行图片加载,只有当用户不再滑动并且减速效果停止的时候,才进行加载.
+9. 正确使用reuseIdentifier来重用Cells
+10. madan，古老的机器不要用AutoLayout,计算会hin复杂，view越多越复杂。
+11. 将GPU的部分渲染转接给CPU，那么如何转接呢？我们可以在单个控件中重载drawRect:方法,直接将文字和图片绘制然后输出到主线程上。
+
+		-(void)drawRect:(CGRect)rect {
+			UIImage *image = [UIImage imageNamed:@"logo"];
+			image drawInRect:CGRectMake(0, 0, 100, 100)];
+			NSString *str = @"123 1234 12345 123456";
+			CGContextRef ctx = UIGraphicsGetCurrentContext();
+			CGContextAddRect(ctx, CGRectMake(0, 0, 100, 100));
+			CGContextStrokePath(ctx);
+			//这里会增加 100 *100 * 4 = 40kb大小的内存
+			[str drawInRect:CGRectMake(0, 0, 100, 100) withAttributes:nil];
+		}
+[写的不错的tableView优化之一](http://www.cnblogs.com/OIMM/p/5663900.html)[写的不错的tableView优化之二](http://www.jianshu.com/p/8f3ed86e6480)
+
 15. 对OC的理解
 运行时语言、runtime、内存管理、block、代理
 

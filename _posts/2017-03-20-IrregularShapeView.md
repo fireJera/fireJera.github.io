@@ -6,6 +6,7 @@ header: Irregualr shape View
 
 A goal is a dream with a deadline.
 目标就是给梦想一个权限
+Sometimes ever, sometimes never.
 
 	class CustomButton: UIView {
 	    var shapLayer: CAShapeLayer?

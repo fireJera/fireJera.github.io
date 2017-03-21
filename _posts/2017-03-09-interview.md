@@ -738,15 +738,52 @@ add是选择提交哪些文件，可以不选择不想提交的文件。
 
 10. 支付宝sdk安全
 11. http状态码 200 400 500
+
+200以上是正常、400是路径为题 页面不存在、被拒、禁止等。500是服务器(内部)错误。
 12. 应用里有哪几个文件夹，iTunes会保存的是哪个文件夹
 
 Documents: 最常用的目录，iTunes同步该应用时会同步此文件夹中的内容，适合存储重要数据。
 Library/Caches: iTunes不会同步此文件夹，适合存储体积大，不需要备份的非重要数据。
 Library/Preferences: iTunes同步该应用时会同步此文件夹中的内容，通常保存应用的设置信息。
+tmp
 
 13. gcd nsoperationqueue thread(区别)各有什么优势
+NSThread是轻量级的多线程开发，需要自己管理线程生命周期。也就是自己调用start end方法来开始和结束吧。
+线程默认优先级为0.5，0-1，1最高，cancel方法并不能真正停止，只是改变线程状态，exist才是停止当前线程
+
+为了简化多线程开发过程，苹果官方对NSObject进行分类扩展(本质还是创建NSThread)，对于简单的多线程操作可以直接使用这些扩展方法。
+
+	- (void)performSelectorInBackground:(SEL)aSelector withObject:(id)arg：//在后台执行一个操作，本质就是重新创建一个线程执行当前方法。貌似swift不支持鸟
+	
+	- (void)performSelector:(SEL)aSelector onThread:(NSThread *)thr withObject:(id)arg waitUntilDone:(BOOL)wait：//在指定的线程上执行一个方法，需要用户创建一个线程对象。
+	
+	- (void)performSelectorOnMainThread:(SEL)aSelector withObject:(id)arg waitUntilDone:(BOOL)wait：//在主线程上执行一个方法（前面已经使用过）。
+
+
+NSOperationQueue负责管理执行所有的NSOperation(NSBlockOperation、NSInvocationOperation)，更加容易的管理线程总数和控制线程间的依赖关系。
+
+>summary:
+1. 无论哪种方式，每个线程启动后不一定立即执行。
+2. 更新UI应该在主线程中，并且同步。
+3. NSThread轻量级，控制顺序比较难，无法控制总数，简单的推荐NSObject的扩展而不用NSThread
+4. NSOperationQueue控制线程总数和依赖关系，NSOperation不应该直接调用start直接执行(会在主线程中执行)而是应该放到queue中
+5. NSBlockOperation相比较NSInvocationOperation(貌似swift不支持了)，代码简单，闭包行没有传参问题
+6. NSOperation是对GCD的面向对象的封装，但是GCD是C编写，效率更高
+7. GCD串行队列中的任务被安排到同一线程中，可以方便控制顺序，并发队列在多个线程中执行，顺序复杂但更高效。只有并行队列的一步执行才是多任务一起执行，其他方式全是一个一个顺序执行。
+8. @synchornized比NSBlock更简单
+[相关链接1](http://blog.csdn.net/shenjie12345678/article/details/44152605)[相关链接2](http://www.cocoachina.com/ios/20150731/12819.html)
+
+
+GCD:基于C语言并且GCD也是目前苹果官方比较推荐的方式（它充分利用了多核处理器的运算性能）NSLock @synchornized代码快加锁
+
 14. tableview的重用，会有什么问题会导致卡顿
+
+会创建超过屏幕展示范围上下各一个缓冲数量的cell，移动到屏幕外的范围，就是保存的缓存容器(NSSet、NSArray)中，然后将要移动到屏幕展示的时候会尝试从容器中取出cell，如果容器为空时则会新建一个cell。导致卡顿的常见问题有当cell高度可变时的高度计算和复杂cell的绘制比如圆角图片等。
+
 15. 对OC的理解
+运行时语言、runtime、内存管理、block、代理
+
+
 16. 控制链传递
 
 APPDelegate->UIApplication->UIWindow->UIViewController->UIView->Subviews.

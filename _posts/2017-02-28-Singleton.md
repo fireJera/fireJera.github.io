@@ -74,7 +74,7 @@ OC版：
 
 看见这些我心里有很多疑问，@synchronized是个嘛东西，原理？dispatch_once又是干嘛的，allocWithZone又是什么？dispatch_once_t？
 
-![???](https://jeremy1221.github.io/img/%3F%3F%3F.gif)
+![???](https://Jeremy1221.github.io/img/doubt.gif)
 
 首先我们来看看@synchronized和dispatch\_once，先举个例子，比如现在同时有两个线程(A和B)要使用sharedInstance创建实例，当两个线程同事运行到@synchronized的代码块时，其中一个线程(A)会上锁，然后线程B会进入睡眠直到线程A运行结束，当线程A运行结束时instance已经不是nil了，所以线程B不会再创建。同理，dispatch\_once会保证这段代码只运行一次，所以线程A先运行后，线程B就不会再运行了。[原文戳这里](http://www.cocoachina.com/ios/20160613/16661.html)
 

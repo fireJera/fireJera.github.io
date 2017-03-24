@@ -122,7 +122,7 @@ If all the 3 didn't handle the message.Then throw err in the method doesNotRecog
 	
 Method Swizzling:
 
-I think it's relative simple, so I put id here.
+I think it's relative simple, so I put it here.
 
 	#import "UIViewController+Swizzling.h"
 	#import <objc/runtime.h>
@@ -142,10 +142,11 @@ I think it's relative simple, so I put id here.
 	        //judge the method will be swizlling is existed
 	        BOOL didAddMethod = class_addMethod(class, originalSelector, method_getImplementation(swizzlingMethod), method_getTypeEncoding(swizzlingMethod));
 	        if (didAddMethod) {
-	            //This way exchange method directly
+	            //This way exchange method indirectly
+	            //if superClass implenmention the method, but itself didn't, so we need add new implenmention before exchange.
 	            class_replaceMethod(class, swizzlingSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));
 	        } else {
-	            //This way exchange implemention indirect
+	            //This way exchange implemention directly
 	            method_exchangeImplementations(originalMethod, swizzlingMethod);
 	        }
 	    });
@@ -158,60 +159,36 @@ I think it's relative simple, so I put id here.
 	@end
 
 >NOTE:
->
+
 >1. swizzling should be invoked in load method.OC automatically calling two class method +load and +initialize in runtime.+load will be invoked when class initial load(会在初始加载时调用), +initialize will be called by lazy.If program don't send message to a class or its subclass, then +initialize will never be called. So we should put it in +load.
->
+
 >2. swizzling should do in dispatch_once.Because double run will turn back original status before swizzling.
->
+
 >3. Don't add [super load] in load, if there two class inherit the class.If they all do [super init], it will be the same as above.
 
 
 swift method swizzling:
 
 	public extension DispatchQueue {
-   	private static var _onceTracker = [String]()
-    
-    /**
-    Executes a block of code, associated with an unique token. The code is thread safe and will only execute the code once even in the presence of multithread calls.
-     
-     - parameter token: A unique reverse DNS style name such as com.vectorform.<name> or a GUID
-     - parameter block: Block to execute once
-    */
-    
-    public class func once(token: String, block: () -> Void) {
-        objc_sync_enter(self)
-        defer {
-            objc_sync_exit(self)
-        }
-        if _onceTracker.contains(token) {
-            return
-        }
-        
-        _onceTracker.append(token)
-        block()
-    }
+	   	private static var _onceTracker = [String]()
+	    
+	    /**
+	    Executes a block of code, associated with an unique token. The code is thread safe and will only execute the code once even in the presence of multithread calls.
+	     
+	     - parameter token: A unique reverse DNS style name such as com.vectorform.<name> or a GUID
+	     - parameter block: Block to execute once
+	    */
+	    
+	    public class func once(token: String, block: () -> Void) {
+	        objc_sync_enter(self)
+	        defer {
+	            objc_sync_exit(self)
+	        }
+	        if _onceTracker.contains(token) {
+	            return
+	        }
+	        
+	        _onceTracker.append(token)
+	        block()
+	    }
 	}
-
-	public extension DispatchQueue {
-   	private static var _onceTracker = [String]()
-    
-    /**
-    Executes a block of code, associated with an unique token. The code is thread safe and will only execute the code once even in the presence of multithread calls.
-     
-     - parameter token: A unique reverse DNS style name such as com.vectorform.<name> or a GUID
-     - parameter block: Block to execute once
-    */
-    
-    public class func once(token: String, block: () -> Void) {
-        objc_sync_enter(self)
-        defer {
-            objc_sync_exit(self)
-        }
-        if _onceTracker.contains(token) {
-            return
-        }
-        
-        _onceTracker.append(token)
-        block()
-    }
-}

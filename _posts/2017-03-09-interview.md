@@ -214,6 +214,10 @@ Carthage使用MIT开源协议授权发布。
 清理工程 shift+cmd+k
 跳转到头文件 ctrl+cmd+up
 opt+left click
+行首/尾 ctrl+a/e
+快速定位类文件 shift+cmd+J
+ctrl+1 方法调用
+ctrl+6 类结构
 
 * IBDesignable
 

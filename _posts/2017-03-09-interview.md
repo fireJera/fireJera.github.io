@@ -828,3 +828,12 @@ APPDelegate->UIApplication->UIWindow->UIViewController->UIView->Subviews.
 方法1返回响应时间的对象，2返回触摸点点是否在UIView的范围内。
 
 * 动画
+* 上线被拒常见原因
+
+1. 程序崩溃
+2. support url 不能访问(或者没有提供联系信息之类的)
+3. 未提供测试账号
+4. 未完成功能不要说待开发之类的
+5. 活动之类的奖品出现apple的相关产品，还要声明与apple没有任何关系的
+6. 不允许调用私有API
+7. 

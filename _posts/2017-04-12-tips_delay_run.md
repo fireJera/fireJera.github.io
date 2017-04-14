@@ -3,6 +3,7 @@ title: delay run
 description: Four way to run code after delay
 header:How to delay running
 ---
+
 Genius often betrays itself into great errors.
 
 There is four ways to delay running.

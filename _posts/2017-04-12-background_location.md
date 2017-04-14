@@ -15,7 +15,7 @@ locationManager property
 5. allowsBackgroundLocationUpdates //must set if you want background location
 6. distanceFilter //minimum distance to update in meters
 
-Method
+Method:
 1. requestAlwaysAuthorization() //Allow background location
 2. requestWhenInUseAuthorization() //also can run in back if you set allowsBackgroundLocationUpdates true, when alow location in background, there is a blue header in top of screen when we press home button.
 3. requestLocation() //didUpdateLocations callback only one time

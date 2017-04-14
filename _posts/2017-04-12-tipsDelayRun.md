@@ -1,7 +1,7 @@
 ---
-title: delay run
+title: delayRun
 description: Four way to run code after delay
-header:How to delay running
+header: How to delay running
 ---
 
 Genius often betrays itself into great errors.

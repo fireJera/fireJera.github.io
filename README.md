@@ -1,2 +1,2 @@
 # mytecblogs
-my technologial bolgs
+my technologial blogs

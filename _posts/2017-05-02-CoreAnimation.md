@@ -8,7 +8,7 @@ The beauty of journey is found in the scenery along the way.
 
 ![](https://Jeremy1221.github.io/img/coreanimation/coreanimation.png)
 
-###Core Animation Manages Your APP's Content
+###Core Animation Manages Your APP's Content###
 
 Core Animation is not a drawing system itself.It is an infrastructure for compositing and manipulating your app's content in hardware.At the heart of this infrastructure are *layer objects*, which you use to manage and manipulate your content.A layer captures your content into a bitmap that can be manipulated easily by the graphics hardware.In most apps, layers are used as a way to manage the content of views but you can also create standalone layers depending on your needs.
 

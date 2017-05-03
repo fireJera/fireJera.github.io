@@ -6,7 +6,7 @@ header: CoreAnimation
 
 The beauty of journey is found in the scenery along the way.
 
-![](https://Jeremy1221.github.io/img/coreanimation/coreanimation.png)
+![](https://jeremy1221.github.io/img/CoreAnimation/coreanimation.png)
 
 ###Core Animation Manages Your APP's Content###
 
@@ -44,11 +44,11 @@ An App using Core Animation has three sets of layer objects. Each set of layer o
 
 Each set of layer objects is organized into a hirarchical structure like the views in your app. In fact, for an app that enables layers for all of its viewsm the initial structure of each tree matches the structure of the view hierarchy exactly. Hpwever, an app can add additional layer objects-that is layers are not associated with a view-into the layer hierarchy as nedded. You might do this in situations to optimize your app's performancefor content that does not require all the overhead of a view. The window in the example contains a content view, which iteself contains a button view and two standalone layer objects. Each view has a corresponding layer object that forms part of the layer hierarchy.
 
-![](https://Jeremy1221.github.io/img/coreanimation/sublayer_hierarchy.png)
+![](https://jeremy1221.github.io/img/CoreAnimation/sublayer_hierarchy.png)
 
 For every object in the layer tree, there is a matching object in the presentatiuon and render trees. As was previously mentioned, apps primarily work with objects in the layer tree but may at tines access obhects in the presentation tree. Specifically, accessing the pressentation:ayer property of an object in the layer tree returns the corresponding object in the persentation tree. You might want to access that object to read the current value of a property that is in the middle of an animation.
 
-![](https://Jeremy1221.github.io/img/coreanimation/sublayer_hierarchies.png)
+![](https://jeremy1221.github.io/img/CoreAnimation/sublayer_hierarchies.png)
 
 > Important: You should access objects in the presentation tree only while an animation is in flgiht. While an animation is in progress, the presentation tree contains the layer values as they appear onscreen at that instant. This behavior differs from the layer tree, which always reflects the last value set by your code an is equivalent to the final state of the animation.
 
@@ -61,3 +61,4 @@ In iOS, every view is backed by a corresponding layer object but in OS X you mus
 When you enable layers support for a view, you create what is referred to as a layer-backed view. In a layer-backed view, the system is responsible for creating the underlying layer object and for keeping that layer in sync with views. All iOS views are layer-backed and most views in OS X are as well.
 
 > Note: For layer-backed views, it is recommended that you manipulate the view, rather that its layer, whenever possible. In iOS, views are just a thin wrapper around layer objects, so any manipulates you make to the layer usually work just fine. But there are case in both iOS and OS X where manipulating the layer instead of the view might not yield the desired results. Whenever possible, this document points out those pitfalls and tries to provided ways to help you work around them.
+

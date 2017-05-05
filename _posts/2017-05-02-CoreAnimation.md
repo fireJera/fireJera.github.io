@@ -54,6 +54,7 @@ For every object in the layer tree, there is a matching object in the presentati
 
 
 ###The Relationship Between Layers and Views
+
 Layers are not a replacement for your app's views-that is, your cannot create a visual interface based solely on layer objects. Layers provide infrastructure for your views. Specifically, layers make it easier and more efficient to draw and animate the contents of views and maintain high frame rates while doing so. However, there are many things that layers do not do. Layers do not handle events, draw content, participate in the responder chain, or do many other things. For this reason, every app must still have one or more views to handle those kinds of interactions.
 
 In iOS, every view is backed by a corresponding layer object but in OS X you must decide which view should have layers. In OS X v10.8 and later, it probably makes sense to add layers to all of your views. However you are not required to do so and can still disalbe layers in cases where the overhead is unwarranted and unneeded. Layers do increase your app's memory overhead somewhat but their benefits often outweight the disadvantage, so it is always best to test the performance of your app before disabling layer support.
@@ -62,3 +63,18 @@ When you enable layers support for a view, you create what is referred to as a l
 
 > Note: For layer-backed views, it is recommended that you manipulate the view, rather that its layer, whenever possible. In iOS, views are just a thin wrapper around layer objects, so any manipulates you make to the layer usually work just fine. But there are case in both iOS and OS X where manipulating the layer instead of the view might not yield the desired results. Whenever possible, this document points out those pitfalls and tries to provided ways to help you work around them.
 
+##Providing Layer's Contents
+
+Layers are data objects that manage content provided by your app. A layer's content consists of a bitmap containing the visual data you want to display. You can provide the content for that bitmap in one of three ways:
+
+* Assign an image object directly to the layer object's contents property.(This technique is best for layer content thath never, or raraly, changes.)
+* Assign a delegate object to the layer and let the delegate draw the layer's content.(This technique is best for layer content that might change periodicallu and can be provided by an external object, such as a view.)
+* Define a ;ayer subclass and override one of its drawing methods to provide the layer contents yourself.(This technique is appropriate if you have to create a custom layer subclass anyway or if you want to change the fundamental drawing behavior of the layer.)
+
+The only time you need to worry aboyt providing content for a layer is when you create the layer object yourself. If your app contains nothing but layer-backed views, you do not have to worry about using any of the preceding techniqes to provide layer content. Layer-backed views automatically provide the contents for their associated layers in the most efficient way possible.
+
+###速度控制函数(CAMediaTimingFunction)
+1.kCAMediaTimingFunctionLinear（线性）：匀速，给你一个相对静态的感觉
+2.kCAMediaTimingFunctionEaseIn（渐进）：动画缓慢进入，然后加速离开
+3.kCAMediaTimingFunctionEaseOut（渐出）：动画全速进入，然后减速的到达目的地
+4.kCAMediaTimingFunctionEaseInEaseOut（渐进渐出）：动画缓慢的进入，中间加

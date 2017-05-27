@@ -777,7 +777,7 @@ NSOperationQueue负责管理执行所有的NSOperation(NSBlockOperation、NSInvo
 4. NSOperationQueue控制线程总数和依赖关系，NSOperation不应该直接调用start直接执行(会在主线程中执行)而是应该放到queue中
 5. NSBlockOperation相比较NSInvocationOperation(貌似swift不支持了)，代码简单，闭包行没有传参问题
 6. NSOperation是对GCD的面向对象的封装，但是GCD是C编写，效率更高
-7. GCD串行队列中的任务被安排到同一线程中，可以方便控制顺序，并发队列在多个线程中执行，顺序复杂但更高效。只有并行队列的一步执行才是多任务一起执行，其他方式全是一个一个顺序执行。
+7. GCD串行队列中的任务被安排到同一线程中，可以方便控制顺序，并发队列在多个线程中执行，顺序复杂但更高效。只有并行队列的异步执行才是多任务一起执行，其他方式全是一个一个顺序执行。
 8. @synchornized比NSBlock更简单
 [相关链接1](http://blog.csdn.net/shenjie12345678/article/details/44152605)[相关链接2](http://www.cocoachina.com/ios/20150731/12819.html)
 

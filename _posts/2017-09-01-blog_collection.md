@@ -28,6 +28,8 @@ desciption: bolg_collection
 
 [iOS 学习资料整理](https://github.com/Aufree/trip-to-iOS)
 
+[iOS资源大全中文版](https://github.com/jobbole/awesome-ios-cn#other-testing)
+
 ###1. 面试
 [丁香园iOS电话面试问题总结](http://www.cocoachina.com/ios/20170623/19626.html)
 

@@ -1,7 +1,7 @@
 ---
-title: bolg_collection
-header: bolg_collection
-desciption: bolg_collection 
+title: blog_collection
+header: blog_collection
+desciption: blog_collection 
 ---
 ###技巧 进阶
 [汉斯哈哈哈](http://www.jianshu.com/u/368a8cd349af)

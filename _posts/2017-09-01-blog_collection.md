@@ -32,6 +32,8 @@ desciption: blog_collection
 
 [一个个人博客-东西比较多](http://www.cnblogs.com/oc-bowen/category/769481.html)
 
+[简单的MVVM的理解和使用](http://www.cocoachina.com/ios/20150526/11930.html)
+
 ###1. 面试
 [丁香园iOS电话面试问题总结](http://www.cocoachina.com/ios/20170623/19626.html)
 

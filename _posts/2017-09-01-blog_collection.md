@@ -34,6 +34,15 @@ desciption: blog_collection
 
 [简单的MVVM的理解和使用](http://www.cocoachina.com/ios/20150526/11930.html)
 
+###iOS应用架构谈 网络层设计
+(iOS应用架构谈 网络层设计)[http://www.cocoachina.com/ios/20150603/12023.html]
+
+(iOS应用架构谈 网络层设计)[https://casatwy.com/iosying-yong-jia-gou-tan-viewceng-de-zu-zhi-he-diao-yong-fang-an.html]
+
+(iOS应用架构谈 网络层设计)[http://www.jianshu.com/p/e528f548d24d]
+
+(iOS学习之路(资料推荐))[http://www.cocoachina.com/ios/20161118/18121.html]
+
 ###1. 面试
 [丁香园iOS电话面试问题总结](http://www.cocoachina.com/ios/20170623/19626.html)
 

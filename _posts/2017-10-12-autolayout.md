@@ -6,10 +6,9 @@ description: autolayout
 
 human life is ephemera, whick makes it precious.生命短暂，所以珍贵。
 
-###Introduce TO Auto Layout
+###Introduce To Auto Layout
 
 1. autolayout起源与cassowary,他是为解决用户界面布局问题而开发的。为了取代基于spring和strut的autosizing。与autosizing兼容。
-
 
 2. 可用hasAmbiguousLayout测试视图约束是否充分。
 
@@ -36,8 +35,8 @@ human life is ephemera, whick makes it precious.生命短暂，所以珍贵。
 
 ###第二章 Contrainits
 
-1. constrainit types - 
-Layout constraints position and size.
+####Constrainit Types
+1. Layout constraints - position and size.
 2. content size constraints - self size related to content 就是压缩阻力(compression rules)和内容吸附(hugging rules)
 3. Autosizing constraints - translate the older autoresizing masks into the auto layout system.
 4. Layout support constraints 
@@ -66,3 +65,8 @@ content size constraints经常出现在label image 和 controls中，尤其是im
 优先级有系统定义的枚举
 
 在运行时修改优先级可能会导致程序崩溃。
+
+####Content Size Constraints
+我的理解就是 有些控件无须设置它的高宽约束，而是根据他的内容动态改变自己的高宽，比如label、uiimageview、uibutton。当我们改变label的内容时，它的长度会自动改变，这就是内容大小约束的作用，主要有两种约束，压缩阻力和内容吸附。一个用于压缩时，另一个用于扩张时。intrinsicContentSize。
+
+image的contentmodes就是通过设置内容大小来实现的(我的理解)

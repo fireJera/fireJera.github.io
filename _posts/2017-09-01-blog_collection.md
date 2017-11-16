@@ -34,6 +34,8 @@ desciption: blog_collection
 
 [简单的MVVM的理解和使用](http://www.cocoachina.com/ios/20150526/11930.html)
 
+[检测一个对象有没有释放掉-内存泄漏](https://yq.aliyun.com/articles/30517)
+
 ###iOS应用架构谈 网络层设计
 (iOS应用架构谈 网络层设计)[http://www.cocoachina.com/ios/20150603/12023.html]
 

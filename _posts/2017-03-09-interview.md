@@ -202,22 +202,46 @@ Carthage使用MIT开源协议授权发布。
 
 
 运行 cmd+r 
+
 停止运行 cmd+. 
+
 查找cmd+f 
+
 全局查找shift+cmd+f 
+
 打开文件shift+cmd+o 
+
 编译 cmd+b
+
 回到上一个文件 ctrl+cmd+left
+
 回到下一个文件 ctrl+cmd+right
+
 新建文件 cmd+n
+
 新建工程 shift+cmd+n
+
 清理工程 shift+cmd+k
+
 跳转到头文件 ctrl+cmd+up
+
 opt+left click
+
 行首/尾 ctrl+a/e
+
 快速定位类文件 shift+cmd+J
+
 ctrl+1 方法调用
+
 ctrl+6 类结构
+
+⌘ + l 跳转到某行
+
+⌥ + ⌘ + [ 、 ⌥ + ⌘ + ] 上移 下移 当前行
+
+⌥ + ⌘ + ← 、 ⌥ + ⌘ + → 折叠 打开 当前函数
+
+⌥ + ⌘ + / 给方法加文档注释。
 
 * IBDesignable
 

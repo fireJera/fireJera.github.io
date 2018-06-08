@@ -60,11 +60,11 @@ desciption: blog_collection
 
 [10款iOS高效开发必备的Objective-C类库](https://my.oschina.net/iNiL0119/blog/179063)
 
-[iOS开发——创建你自己的Framework](http://www.cocoachina.com/ios/20150127/11022.html)
+[iOS开发——创建你自己的Framework](http://www.cocoachina.com/ios/w20150127/11022.html)
 
 [必须Mark！43个优秀的Swift开源项目推荐](http://www.csdn.net/article/2015-01-09/2823502-swift-open-source-libs)
 
-
+[在MacOS和iOS系统中使用OpenCV](https://blog.devtang.com/2012/10/27/use-opencv-in-ios/)
 ###3. swift
 [Swift 语言指南](https://github.com/ipader/SwiftGuide/blob/master/README.md)
 

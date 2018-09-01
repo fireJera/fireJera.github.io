@@ -1,7 +1,7 @@
 ---
-title: Block原理
-header: Block原理
-description: Block原理
+title: objc_msgSend消息传递-对象方法消息传递流程
+header: objc_msgSend消息传递-对象方法消息传递流程
+description: objc_msgSend消息传递-对象方法消息传递流程
 ---
 
 ##Nobody gets to live the life backwards, look ahead, that's where your future lies.
@@ -221,7 +221,54 @@ _class_lookupMethodAndLoadCache3就好像一个中转函数，并给出了在查
 		return imp;
 	}
 
-以上就是整个的查找流程
+以上就是整个的查找流程，然后我们再对其中的一些方法逐一解读。
+
+	static method_t * getMethodNoSuper_nolock(Class cls, SEL sel) {
+		runtimeLock.assertLocked();
+		// 遍历所在类的methods，这里的methods是List链式类型，里面存放的都是指针
+		for (auto mlists = cls->data()->methods.beginLists(), end = cls->data()->methods.endLists(); mlists !=  end; ++mlists) {
+			method_t *m = search_method_list(*mlists, sel);
+			if (m) return m;
+		}
+		return nil;
+	}
+	
+这里的对于class存储方式，我在以后的博文中会分析其存储结构。
+
+而对于没有实现方法的解析过程中，会有以下过程:
+
+	void _class_resolveMethod(Class cls, SEL sel, id inst) {
+		if (! cls->isMethodClass) {
+			// try [cls resolveInstanceMethod:sel]
+			// 针对于对象方法的操作
+			//	这个方法是动态方法解析中，当收到无法解读的消息后调用。
+			// 这个方法也会用在@dynamic，以后会在消息转发机制的源码分析中介绍
+			_class_resolveInstanceMethod(cls, sel, inst);
+		}
+		else {
+			// try [nonMethodClass resolveClassMethod:sel]
+			// and [cls resolveInstanceMethod:sel]
+			// 针对于类方法的操作，说明同上
+			_class_resolveClassMethod(cls, sel, inst);
+			// 再次启动查询，并且判断是否拥有缓存中消息标记_objc_msgForward_impcache
+			if (!lookUpImpOrNil(cls, sel, inst, NO/*initizlize*/, YES/*cache*/, NO/*resolver*/)) {
+				// 说明可能不是 metaclass的方法实现，当做对象方法尝试
+				_class_resolveInstanceMethod(cls, sel, inst);
+			}
+		}
+	}
+
+来单步调试一下程序，由于我们的test方法属于正常的类方法，所以会进入正常的查询类方法列表中查到，进入done函数块，返回到objc_msgSend方法，最终回到我们的函数调用位置：
+
+![](https://Jeremy1221.github.io/img/msgSend/breakpoint1.jpg)
+
+###IMP in Method List Flow
+
+来简单总结一下在第一次调用某个对象方法的消息传递流程：当代码执行到某个对象(第一次)调用某个方法后，首先会确定这个方法的接收者和选择子，并组装成C的ojbc_msgSend函数形式，启动消息传递机制。
+
+objc_msgSend函数是使用汇编语言实现的，其中我们先尝试的从缓存列表中(也就是说常说的快速映射表)查询缓存，倘若查询失败，则会将具体的类对象、选择子、接收者在指定的内存单元中存储，并调用__class_lookupMethodAndLoadCache3函数。__class_lookupMethodAndLoadCache3我们俗称为在方法列表中查询的入口函数，他会直接调用lookUpImpOrForward进行查询方法对应的IMP指针。由于我们是方法函数，在获取方法列表后，即可查询到IMP指针。由于是第一次调用，则会把我们的方法加入缓存，并goto到done代码块，返回IMP指针。当objc_msgSend接收到IMP指针后存储至rax寄存器，返回调用函数位置，完成整个传递流程。
+
+![](https://Jeremy1221.github.io/img/msgSend/flow.jpg)
 
 https://www.desgard.com/objc_msgSend1/
 

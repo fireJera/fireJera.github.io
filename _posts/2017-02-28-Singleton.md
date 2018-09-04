@@ -47,9 +47,9 @@ OC版：
 	+(instancetype)sharedInstance {
 	    static dispatch_once_t onceToken;
 	    dispatch_once(&onceToken, ^{
-	        if (instance == nil) {
-	            instance = [[Singleton alloc] init];
-	        }
+	        //if (instance == nil) {
+	    	instance = [[Singleton alloc] init];
+	        //}
 	    });
 	    return instance;
 	}
@@ -57,9 +57,9 @@ OC版：
 	+(instancetype)allocWithZone:(struct _NSZone *)zone {
 	    static dispatch_once_t onceToken;
 	    dispatch_once(&onceToken, ^{
-	        if (instance == nil) {
-	            instance = [super allocWithZone:zone];
-	        }
+	        //if (instance == nil) {
+	        instance = [super allocWithZone:zone];
+	        //}
 	    });
 	    return instance;
 	}
@@ -87,6 +87,32 @@ typedef long dispatch_once_t;
 
 再来看看allocWithZone,原来这是个历史遗留问题，当我们调用alloc时最终还是会调用allocWithZone，所以当某人直接调用allocWithZone(谁会装逼这么用？)来创建实例时还是会创建出一个新的实例从而不能保证唯一性。[了解更多点击我](http://blog.csdn.net/jiajiayouba/article/details/44306679)
 
+###2018.09.04 有新的发现
+
+在复习单利的时候发现了一些洗的问题
+
+在上面使用dispatch\_once\_t的代码注释了两行，在这个锁(暂且这么叫吧)里面不用再判断instance是否为空了，因为只会运行一次。
+
+而且还发现了新的简化代码的写法:
+
+	@implementation Singleton
+	static Singleton *instance = nil;
+	
+	+(instancetype)sharedInstance {
+	    static dispatch_once_t onceToken;
+	    dispatch_once(&onceToken, ^{
+	    	instance = [[super allocWithZone:NULL] init];
+	    });
+	    return instance;
+	}
+	
+	+(instancetype)allocWithZone:(struct _NSZone *)zone {
+	    return [Singleton sharedInstance];
+	    //如果想一劳永逸的话，或许可以这么写
+	    //return [[self class] sharedInstance];
+	}
+One demo run everywhere.
+这样我们就可以使用一个模板来写单例了。
 
 接下来我们看swift版的单例，swift有四种写法：
 

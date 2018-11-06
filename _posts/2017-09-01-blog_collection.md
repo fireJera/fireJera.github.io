@@ -39,6 +39,8 @@ desciption: blog_collection
 [iOS之流布局UICollectionView全系列教程
 ](http://blog.csdn.net/lvxiangan/article/details/73826108)
 
+[logshow & redirect](http://fighting300.com/2017/12/08/iOS-LogShowAndRedirect/)
+
 ###iOS应用架构谈 网络层设计
 (iOS应用架构谈 网络层设计)[http://www.cocoachina.com/ios/20150603/12023.html]
 
@@ -65,6 +67,16 @@ desciption: blog_collection
 [必须Mark！43个优秀的Swift开源项目推荐](http://www.csdn.net/article/2015-01-09/2823502-swift-open-source-libs)
 
 [在MacOS和iOS系统中使用OpenCV](https://blog.devtang.com/2012/10/27/use-opencv-in-ios/)
+
+[github 100个优秀的库](https://www.jianshu.com/p/cc30e926ce0c)
+
+[GitHub第三方资源库整理(OC篇)
+](https://www.jianshu.com/p/a1c3b7d5bab1)
+
+[iOS 逆向](https://danleechina.github.io/jailbroken/#crack)
+
+[iOS逆向](https://www.cnblogs.com/LeeGof/p/6992852.html)
+
 ###3. swift
 [Swift 语言指南](https://github.com/ipader/SwiftGuide/blob/master/README.md)
 

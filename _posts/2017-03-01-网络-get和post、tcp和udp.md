@@ -46,7 +46,7 @@ GET和POST是什么？HTTP协议中的两种发送请求的方法。
 HTTP是什么？HTTP是基于TCP/IP的关于数据如何在万维网中如何通信的协议。
 
 HTTP的底层是TCP/IP。所以GET和POST的底层也是TCP/IP，也就是说，GET和POST都是TCP链接。GET和POST能做的事情是一样一样的。你要给GET加上request body，给POST带上url参数，技术上完全是通行的。
->在我大万维网世界中，TCP就像骑车，我们用TCP来运输数据，它很可靠，从来不会法神丢件少件的现象。但是如果路上跑的全是看起来一模一样的的汽车，那这个世界看起来是一团混乱，送急件的汽车可能被前面满载货物的汽车拦堵在路上，整个交通系统一定会瘫痪，为了避免这种情况发生，交通规则HTTP诞生了。HTTP给汽车运输定了好几个服务类别，有GET、POST、PUT、DELETE等。
+>在我大万维网世界中，TCP就像骑车，我们用TCP来运输数据，它很可靠，从来不会发生丢件少件的现象。但是如果路上跑的全是看起来一模一样的的汽车，那这个世界看起来是一团混乱，送急件的汽车可能被前面满载货物的汽车拦堵在路上，整个交通系统一定会瘫痪，为了避免这种情况发生，交通规则HTTP诞生了。HTTP给汽车运输定了好几个服务类别，有GET、POST、PUT、DELETE等。
 >HTTP规定，当执行GET请求的时候，要给汽车贴上GET标签(设置method为GET)，而且要求把传送的数据放在车顶上(url中)以方便记录。如果是POST请求，就要在车上贴上POST的标签，并把货物放在车厢里。当然，你也可以在GET的时候往车厢内偷偷藏点货物，但是这很不光彩。也可以在POST的时候在车顶上也放一些数据，让人觉得傻乎乎的，HTTP只是个行为准则，而TCP才是GET和POST怎么实现的基本。
 
 但是我们只看到HTTP对GEP和POST参数的传送渠道(url还是request body)提出了要求。关于参数大小的限制又是从哪来的呢？
@@ -62,7 +62,7 @@ GET产生一个TCP数据包，POST产生两个数据包
 因为post需要两步，时间上消耗的要多一点，看起来GET和POST更有效。因此Yahoo团队有推荐用GET替换POST来优化网站性能，但这是一个坑！跳入需谨慎。为什么？
 
 1. GET和POST都有自己的语义，不能随便混用。
-2. 据研究，在网络环境好的情况下，发一次包的时间和发两次包的时间差基本可以忽略，而在网络差的情况下，两次包的TCP在验证数据包完整性上，有非常大的有点。
+2. 据研究，在网络环境好的情况下，发一次包的时间和发两次包的时间差基本可以忽略，而在网络差的情况下，两次包的TCP在验证数据包完整性上，有非常大的优点。
 3. 并不是所有浏览器都会在POST中发送两次，__firefox就只发送一次。__
 
 ###新的发现:
@@ -77,7 +77,7 @@ header的时候才有意义。
 > When the request contains an Expect header field that inckudes a 100-continue exoectation, the 100 response indicates that the server wishes to receive the request payload body, as described in Section 5.1.1. The client ought to continue sending the request adn discard the 100 response.
 >  If the request did not contain an Expect header field containing the 100-continue exception, the client can simply discard this interim response.
 
-而实际上，不论哪一种刘篮球，在发送POST的时候都没有带Expect头，server也自然不会发100continue。通过抓包发现，尽管会分两次，body就是紧随在header后面发送的，根本不存在__等待服务器相应__这一说。
+而实际上，不论哪一种浏览器，在发送POST的时候都没有带Expect头，server也自然不会发100continue。通过抓包发现，尽管会分两次，body就是紧随在header后面发送的，根本不存在__等待服务器相应__这一说。
 
 [原文链接](https://zhuanlan.zhihu.com/p/25028045)
 
@@ -105,7 +105,7 @@ tcp包头最小长度20字节，udp只有8个字节，所以开销很小。
 4.流模式与数据报模式 ；
 
 5.TCP保证数据正确性，UDP可能丢包，TCP保证数据顺序，UDP不保证。
->对于可靠性而言，没有绝对可靠，TCP可靠仅仅是在传输层实现了可靠，我也可以让UDP可靠啊，那么就要向上封装，在应用层实现可靠性。因此很多公司都不是直接用TCP和UDP，都是经过封装，满足业务需求。说到这里，就要提一下心跳包，在linux下有keep-alive系统自带的，但是默认时间很长，如果想使用的话可以setsockopt设置，我也可以在应用层实现一个简单心跳包，上次自己多开了一个线程来处理，还是爆头解决。
+>对于可靠性而言，没有绝对可靠，TCP可靠仅仅是在传输层实现了可靠，我也可以让UDP可靠啊，那么就要向上封装，在应用层实现可靠性。因此很多公司都不是直接用TCP和UDP，都是经过封装，满足业务需求。说到这里，就要提一下心跳包，在linux下有keep-alive系统自带的，但是默认时间很长，如果想使用的话可以setsockopt设置，我也可以在应用层实现一个简单心跳包，上次自己多开了一个线程来处理，还是包头解决。
 
 PS:网络分为7层，分别是物理层、数据链路层、网络层、传输层、会话层、表示层和应用层。http属于应用层。
 tcp/ip协议是一个协议簇(只有四层)，里面包含着一大推协议

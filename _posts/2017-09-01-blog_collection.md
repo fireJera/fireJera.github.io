@@ -41,6 +41,8 @@ desciption: blog_collection
 
 [logshow & redirect](http://fighting300.com/2017/12/08/iOS-LogShowAndRedirect/)
 
+[ibireme blog](https://blog.ibireme.com/)
+
 ###iOS应用架构谈 网络层设计
 (iOS应用架构谈 网络层设计)[http://www.cocoachina.com/ios/20150603/12023.html]
 

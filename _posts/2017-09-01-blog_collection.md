@@ -36,12 +36,15 @@ desciption: blog_collection
 
 [检测一个对象有没有释放掉-内存泄漏](https://yq.aliyun.com/articles/30517)
 
-[iOS之流布局UICollectionView全系列教程
-](http://blog.csdn.net/lvxiangan/article/details/73826108)
+[iOS之流布局UICollectionView全系列教程](http://blog.csdn.net/lvxiangan/article/details/73826108)
 
 [logshow & redirect](http://fighting300.com/2017/12/08/iOS-LogShowAndRedirect/)
 
 [ibireme blog](https://blog.ibireme.com/)
+
+[CoreText（一）：基本用法](https://blog.csdn.net/xiaoxiaobukuang/article/details/52368694)
+
+[xiaoxiaobukuang的专栏](https://blog.csdn.net/xiaoxiaobukuang/article/list/1)
 
 ###iOS应用架构谈 网络层设计
 (iOS应用架构谈 网络层设计)[http://www.cocoachina.com/ios/20150603/12023.html]

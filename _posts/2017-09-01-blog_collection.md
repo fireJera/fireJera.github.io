@@ -3,7 +3,18 @@ title: blog_collection
 header: blog_collection
 desciption: blog_collection 
 ---
+
+###基础知识
+
+[安全-加解密算法简述](https://dishibolei.github.io/2017/05/25/save-encode/)
+
 ###技巧 进阶
+[iOS NSInvocation](https://www.jianshu.com/p/177e44a411db)
+
+[NSInvocation block](https://www.jianshu.com/p/e1b0aeaed174)
+
+[热修复 ](http://www.cocoachina.com/ios/20180309/22517.html)
+
 [汉斯哈哈哈](http://www.jianshu.com/u/368a8cd349af)
 
 [objc-中国](https://objccn.io/issues/)

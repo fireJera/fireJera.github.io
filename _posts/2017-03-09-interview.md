@@ -268,6 +268,10 @@ control + command + C ： 继续直到，当前选择行
 shift + command + C ： 开启控制台？
 shift + command + Y ： 隐藏/显示 Debug
 
+Control + Command + U: 将选中文字转换为大写格式（Upper case）
+Control + Command + L: 将选中文字转换为小写格式（Lower case）
+Control + Command + C: 将选中文字首字母转换为大写格式（Capitalize）
+
 option + commamd + D 显示隐藏Dock
 
 * IBDesignable

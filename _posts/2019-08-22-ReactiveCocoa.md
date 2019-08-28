@@ -802,6 +802,22 @@ description: ReactiveCocoa
 
     - (void)sendNext:(nullable ValueType)value;
 
+    .m 
+    // Contains all current subscribers to the receiver.
+    @property (nonatomic, strong, readonly) NSMutableArray *subscribers;
+
+    // Contains all of the receiver's subscriptions to other signals.
+    @property (nonatomic, strong, readonly) RACCompoundDisposable *disposable;
+
+    // Enumerates over each of the receiver's `subscribers` and invokes `block` for each.
+    - (void)enumerateSubscribersUsingBlock:(void (^)(id<RACSubscriber> subscriber))block;
+
+    - (instancetype)init { _disposable = [RACCompoundDisposable compoundDisposable] }
+
+    - (void)dealloc { self.disposable dispose }
+
+    - (RACDisposable *)subscribe:(id<RACSubscriber>)subscriber {}
+
 3. RACSignal <RACStream>
 
     + (RACSignal<ValueType> *)createSignal:(RACDisposable * _Nullable (^)(id<RACSubscriber> subscriber))didSubscribe RAC_WARN_UNUSED_RESULT;
@@ -1036,8 +1052,11 @@ description: ReactiveCocoa
     + (instancetype)disposableWithBlock:(void (^)(void))block;
 
     /*
-    OSAtomicCompareAndSwapPtrBarrier 交换 临时变量 blockPtr 和 _disposeBlock
+    while 循环判断 临时变量blockPtr和 _disposeBlock 是否相等 若相等 _disposeBlock 置 NULL 如果blockPtr != self  disposeBlock = blockPtr 
+    运行disposeBlock
+     OSAtomicCompareAndSwapPtrBarrier 交换 临时变量 blockPtr 和 _disposeBlock
     释放旧的 执行新的 https://www.jianshu.com/p/940544653ede
+    CFBridgingRelease 把非OC的指针指向OC并转换为ARC
     */
     - (void)dispose;
 
@@ -1045,10 +1064,11 @@ description: ReactiveCocoa
     - (RACScopedDisposable *)asScopedDisposable{ return [RACScopedDisposable scopedDisposableWithDisposable:self]; };
 
     内部方法
+    // volatile 每次从内存中读取
+    { void * volatile _disposeBlock; }
+
     // 通过判断 成员变量是否为空
-    - (BOOL)isDisposed {
-	    return _disposeBlock == NULL;
-    }
+    - (BOOL)isDisposed { return _disposeBlock == NULL; }
 
     /* 初始化变量 OSMemoryBarrier 防止内存乱序访问 
     https://blog.csdn.net/world_hello_100/article/details/50131497
@@ -1056,5 +1076,141 @@ description: ReactiveCocoa
     init{ _disposeBlock = (__bridge void *)self; OSMemoryBarrier(); };
 
     - (instancetype)initWithBlock:(void (^)(void))block { _disposeBlock = (void *)CFBridgingRetain([block copy]); OSMemoryBarrier(); }
-
+    // 如果 _disposeBlock 为空 或者等于self return 否则释放
     - (void)dealloc;
+
+4. RACScopedDisposable  : RACDisposable
+    
+    /* 唯一的实例化方法 */
+    + (instancetype)scopedDisposableWithDisposable:(RACDisposable *)disposable;
+    
+    // 调用父类的 disposablWithBlock 在block里调用 disposable dispose
+    + (instancetype)scopedDisposableWithDisposable:(RACDisposable *)disposable {}
+
+    // 调用dispose
+    - (void)dealloc {}
+    // 
+    - (RACScopedDisposable *)asScopedDisposable { return self; }
+
+5. RACCompoundDisposable : RACDisposable
+
+    /// Creates and returns a new compound disposable.
+    + (instancetype)compoundDisposable;
+
+    /// Creates and returns a new compound disposable containing the given
+    /// disposables.
+    + (instancetype)compoundDisposableWithDisposables:(nullable NSArray *)disposables;
+
+    /// Adds the given disposable. If the receiving disposable has already been
+    /// disposed of, the given disposable is disposed immediately.
+    ///
+    /// This method is thread-safe.
+    ///
+    /// disposable - The disposable to add. This may be nil, in which case nothing
+    ///              happens.
+    - (void)addDisposable:(nullable RACDisposable *)disposable;
+
+    /// Removes the specified disposable from the compound disposable (regardless of
+    /// its disposed status), or does nothing if it's not in the compound disposable.
+    ///
+    /// This is mainly useful for limiting the memory usage of the compound
+    /// disposable for long-running operations.
+    ///
+    /// This method is thread-safe.
+    ///
+    /// disposable - The disposable to remove. This argument may be nil (to make the
+    ///              use of weak references easier).
+    - (void)removeDisposable:(nullable RACDisposable *)disposable;
+
+
+    .m
+
+    #define RACCompoundDisposableInlineCount 2
+
+    // 创建一个static CFMutableArray
+    static CFMutableArrayRef RACCreateDisposablesArray(void) {
+        // Compare values using only pointer equality.
+        CFArrayCallBacks callbacks = kCFTypeArrayCallBacks;
+        callbacks.equal = NULL;
+
+        return CFArrayCreateMutable(NULL, 0, &callbacks);
+    }
+    // 实例变量
+    {
+        // Used for synchronization.
+        pthread_mutex_t _mutex;
+
+        #if RACCompoundDisposableInlineCount
+
+        RACDisposable *_inlineDisposables[RACCompoundDisposableInlineCount];
+        #endif
+
+        CFMutableArrayRef _disposables;
+
+        BOOL _disposed;
+    }
+
+
+    - (BOOL)isDisposed {}
+
+    #pragma mark Lifecycle
+
+    + (instancetype)compoundDisposable {}
+
+    + (instancetype)compoundDisposableWithDisposables:(NSArray *)disposables {return [[self alloc] initWithDisposables:disposables];}
+    
+    // 初始化_mutex
+    - (instancetype)init {
+        const int result __attribute__((unused)) = pthread_mutex_init(&_mutex, NULL);
+        NSCAssert(0 == result, @"Failed to initialize mutex with error %d.", result);
+    }
+
+    /*
+    遍历 otherDisposables 放入 _inlineDisposables 最多放入 RACCompoundDisposableInlineCount
+    如果超过限制个数  _disposables = RACCreateDisposablesArray 把剩余的加入到数组里
+    */ 
+    - (instancetype)initWithDisposables:(NSArray *)otherDisposables {}
+
+    - (instancetype)initWithBlock:(void (^)(void))block {
+        RACDisposable *disposable = [RACDisposable disposableWithBlock:block];
+        return [self initWithDisposables:@[ disposable ]];
+    }
+
+    /*
+    置空_inlineDisposables  和释放 _disposables destory _mutex
+     */
+    - (void)dealloc {}
+
+    #pragma mark Addition and Removal
+    /*
+    如果disposable == nil 或者 disposed 返回 加锁  如果 _disposed  disposable dispose
+    否则  _inlineDisposable 哪个是空的  disposable就存入空的位置 跳出 释放锁 如果_disposable == NULL create append
+    */
+    - (void)addDisposable:(RACDisposable *)disposable {}
+   /*
+    加锁  ！_disposable  _inline 中如果有disposable 置空 如果_disposables != NULL 遍历 _disposables 如果 == disposable remmove
+    */ 
+    - (void)removeDisposable:(RACDisposable *)disposable {}
+
+    #pragma mark RACDisposable
+
+    // 将value 转换成disposable 然后 dispose
+    static void disposeEach(const void *value, void *context) {}
+    /*
+    临时变量 remainings CFArrayRef 加锁 _disposed = yes _inlines 遍历置空
+    remainmings = _disposables _disposables = NULL 解锁 inlineCopy dispose
+    如果 remainings 非空 CFArrayAppluFunction  disposeEach CFRelease
+    */
+    - (void)dispose {}
+
+
+## Protocol
+1. RACSubscriber
+
+    - (void)sendNext:(nullable id)value;
+
+    - (void)sendError:(nullable NSError *)error;
+
+    - (void)sendCompleted;
+
+    - (void)didSubscribeWithDisposable:(RACCompoundDisposable *)disposable;

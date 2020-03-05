@@ -122,3 +122,6 @@ desciption: blog_collection
 
 ###5. 提问题请去stackoverflow
 [stackoverflow](https://stackoverflow.com/)
+
+[NSTaggedPointerString](http://www.cocoachina.com/articles/13449)
+[NSTaggedPointer](https://mikeash.com/pyblog/friday-qa-2012-07-27-lets-build-tagged-pointers.html)

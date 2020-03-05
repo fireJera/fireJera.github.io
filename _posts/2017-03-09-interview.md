@@ -206,6 +206,8 @@ Carthage使用MIT开源协议授权发布。
 停止运行 cmd+. 
 
 查找cmd+f 
+⌘ + g : 下一个
+shift + ⌘ + g : 上一个
 
 全局查找shift+cmd+f 
 
@@ -242,6 +244,35 @@ ctrl+6 类结构
 ⌥ + ⌘ + ← 、 ⌥ + ⌘ + → 折叠 打开 当前函数
 
 ⌥ + ⌘ + / 给方法加文档注释。
+
+⌥ + ⌘ + /
+⌥ + ⌘ + N ： new Group
+⌥ + ⌘ + A ： add new files
+⌘ + enter ： 单屏
+⌥ + ⌘ + enter ： 双屏
+ctrl+cmd+j : 前往该类 
+shift + cmd + l : 唤起snippets
+
+control + command + E : 选中内容，当前页加黑显示，一处修改，全部修改！
+
+command + Y 打开关闭断点功能（所有）
+command + \ 改行加/减断点
+shift + command + \ 加符号断点
+
+F6 ： 单步
+F7 ： 跳入
+F8 ： 跳出
+control + command + Y ： 继续
+control + command + C ： 继续直到，当前选择行
+
+shift + command + C ： 开启控制台？
+shift + command + Y ： 隐藏/显示 Debug
+
+Control + Command + U: 将选中文字转换为大写格式（Upper case）
+Control + Command + L: 将选中文字转换为小写格式（Lower case）
+Control + Command + C: 将选中文字首字母转换为大写格式（Capitalize）
+
+option + commamd + D 显示隐藏Dock
 
 * IBDesignable
 

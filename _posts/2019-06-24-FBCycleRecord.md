@@ -29,12 +29,15 @@ description: FBStudyRecord
 - (instantype)init;
 
 - (void)initWithConfiguration:(FBObjectGraphConfiguration *)configuration 初始化方法
+
 // 传入你想监听循环引用的对象 内部使用NSMutableArray
 // 将参数 转换为 FBObjectiveCGraphElement 对象 加入数组
 // 这里的转换使用了 FBRetainCycleUtils 中的C方法来生成FBObjectiveCGraphElement对象 
 - (void)addCandidate:(id)candidate; 
+
 // 在所有备选者中查找循环引用， 最大长度为10
 - (nonnull NSSet<NSArray<FBObjectiveCGraphElement *> *> *)findRetainCycles;
+
 // 在所有备选者中查找循环引用， 超过10时使用此方法
 - (nonnull NSSet<NSArray<FBObjectiveCGraphElement *> *> *)findRetainCyclesWithMaxCycleLength:(NSUInteger)length;
 
@@ -52,6 +55,7 @@ FBObjectiveCGraphElement *_Nullable FBWrapObjectGraphElementWithContext(FBObject
                                                                         id _Nullable object,
                                                                         FBObjectGraphConfiguration *_Nullable configuration,
                                                                         NSArray<NSString *> *_Nullable namePath);
+                                                                        
 FBObjectiveCGraphElement *_Nullable FBWrapObjectGraphElement(FBObjectiveCGraphElement *_Nullable sourceElement,
                                                              id _Nullable object,
                                                              FBObjectGraphConfiguration *_Nullable configuration);
@@ -103,7 +107,7 @@ typedef FBObjectiveCGraphElement *_Nullable(^FBObjectiveCGraphElementTransformer
 3. FBObjectiveCGraphElement
 
 // 在RETAIN_CYCLE_DETECTOR_ENABLED 下 
-// 获取object的类 allowsWeakReferenct = 获取这个类的allowsWeakReference的MethodImplementation
+// 获取object的类 allowsWeakReference = 获取这个类的allowsWeakReference的MethodImplementation
 // if allowsWeakReferenct && (IMP)allowsWeakReferenct != _objc_msgForward  
 // if (allowsWeakReference(object, @selector(allowsWeakReference))) _object = object
 // else _object = object
@@ -150,7 +154,7 @@ struct __attribute__((packed)) BlockLiteral {
 - (nullable NSSet *)allRetainObjects;
 
 // className = NSStringFromClass 如果为空 返回 @"(null)"
-// __attribute__((objc_precise_lifetime)) id anObject = self.object; 防止过早释放
+// __attribute__((objc_precise_lifetime)) id anObject = self.object; 防止过早释放 也就是在局部变量生效的开始如果有值，那么在这个局部的范围内，即时arc检测到引用计数为0该释放了，那么也不会立刻释放，这个范围的代码全部结束时释放。
 // 如果self.object isKindOfClass FBBlockStrongRelationDetector class anObject = [ forwarding]
 // 将anObject转为指针 为空返回 className
 // 转为BlockLiteral 指针 然后获取其调用函数 invoke
@@ -448,13 +452,15 @@ BOOL FBObjectIsBlock(void *)block;
 // 如果block 有C++构造器  或者 block 没有释放函数 忽略 如果有C++那么就没有指针对齐 
 // 所以无法获取layout 如果没有释放函数 那么就不知道谁会被释放 都没法获取强引用
 // 获取释放函数的引用 然后计算引用的个数
-// 遍历引用的个数 生成FBBlockStrongRealtionDetector 分别加入两个数字中
+// 遍历引用的个数 生成FBBlockStrongRealtionDetector 分别加入两个数组中
 // 调用释放函数 释放一个数组 然后再另一个数组中看谁没调用dealloc方法 即为强引用
 static NSIndexSet * _GetBlockStrongLayout(void *)block
 
 // dispatch_once
 // 生成测试Block 然后获取block的class
 // 遍历 blockClass 的 superclass 如果superclass 不为空 并且 不是NSObject class
+// 这里在测试的时候发现，__NSGlobalBlock__的父类是 __NSGlobalBlock 再父类是NSBlock，NSBlock的父类是NSObject
+// __NSMallocBlock__的父类是 __NSMallocBlock 再父类是NSBlock，NSBlock的父类是NSObject
 // 返回blockClass
 static Class _BlockClass 
 
@@ -853,5 +859,18 @@ http://clang.llvm.org/docs/Block-ABI-Apple.html
                                                                     
 
 # 工作流
-
+1. FBRetainCycleUtils初始化一个实例，然后实例调用addCandidate:加入一个要检测的实例 放入一个数组中，放入数组前转换为相应的Timer、Block或者Object类的实例，
+2. 然后调用findRetainCycles方法去遍历数组中的对象，在遍历每一个对象时，首先将每一个对象转换为FBNodeEnumerator（一个能够遍历的类似于NSArray的自定义容器）。
+3. 通过每个对象的allRetainObjects，方法里通过[FBAssiciationManager associationsForObject:对象]获取到runtime关联的引用数组,FBAssiciationManager有个hook和unhook方法通过fishhook.h在加载动态库时将指定方法1与方法t2替换，类似于method_swiizzling，在每次设置值进去的时候，会自动调用交换的方法，然后获取到给定类的强引用的数组。
+4.  再回到上一步，a根据a的不同类型调用不同类的allRetainObjects方法，在a的父类的allRetainObjects方法里上面第一步已经获取到了关联的强引用的值，将每一个值转换为FBObjectiveCGraphElement 放入到一个新的数组中，返回数组。
+4.2 然后block类的allRetainObjects原理 : 调用父类也就是关联的属性，然后将block转换为BlockLiteral结构体指针。如果结构体有C++构造器或者没有copy、dispose方法，返回空。通过将block转换成struct，然后根据结构体中指针的数量生成对应数量的对象FBBlockStrongLayout，调用disposehelper然后就能知道对象哪个位置的变量是strong和weak，再获取对应位置的指针转换为具体对象（取地址&和下标），再去遍历每个对象有没有强引用其他的对象。
+4.3 timer allRetainObjects 原理：NSTimer.target、userinfo、关联属性、强引用、父类的强引用（知道父类和父类的父类相等）、将NSTimer通过runloop获取上下文然后转换成_FBNSCFTimerInfoStruct结构体
+4.4 object allRetainObjects原理：关联属性、强引用、父类的强引用（知道父类和父类的父类相等）通过IvarLayout 来 识别什么是哪些是strong、哪些是weak
+4.5 如果ivar里有结构体，然后会扫描ivar的encode 获取结构体名字。以及结构体的各个变量及类型。
+5. 回到第三步开始，递归遍历对象的所有强关联属性，属性的强关联属性，如果找到放到第一位。
+6
+7
+8
+9
+10
 # 

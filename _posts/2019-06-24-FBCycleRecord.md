@@ -863,7 +863,7 @@ http://clang.llvm.org/docs/Block-ABI-Apple.html
 2. 然后调用findRetainCycles方法去遍历数组中的对象，在遍历每一个对象时，首先将每一个对象转换为FBNodeEnumerator（一个能够遍历的类似于NSArray的自定义容器）。
 3. 通过每个对象的allRetainObjects，方法里通过[FBAssiciationManager associationsForObject:对象]获取到runtime关联的引用数组,FBAssiciationManager有个hook和unhook方法通过fishhook.h在加载动态库时将指定方法1与方法t2替换，类似于method_swiizzling，在每次设置值进去的时候，会自动调用交换的方法，然后获取到给定类的强引用的数组。
 4.  再回到上一步，a根据a的不同类型调用不同类的allRetainObjects方法，在a的父类的allRetainObjects方法里上面第一步已经获取到了关联的强引用的值，将每一个值转换为FBObjectiveCGraphElement 放入到一个新的数组中，返回数组。
-4.2 然后block类的allRetainObjects原理 : 调用父类也就是关联的属性，然后将block转换为BlockLiteral结构体指针。如果结构体有C++构造器或者没有copy、dispose方法，返回空。通过将block转换成struct，然后根据结构体中指针的数量生成对应数量的对象FBBlockStrongLayout，调用disposehelper然后就能知道对象哪个位置的变量是strong和weak，再获取对应位置的指针转换为具体对象（取地址&和下标），再去遍历每个对象有没有强引用其他的对象。
+4.2 然后block类的allRetainObjects原理 : 调用父类也就是关联的属性，然后将block转换为BlockLiteral结构体指针。如果结构体有C++构造器或者没有copy、dispose方法，返回空。通过将block转换成struct，然后根据结构体中指针的数量生成对应数量的对象FBBlockStrongLayout，调用dispose_helper然后就能知道对象哪个位置的变量是strong和weak，再获取对应位置的指针转换为具体对象（取地址&和下标），再去遍历每个对象有没有强引用其他的对象。
 4.3 timer allRetainObjects 原理：NSTimer.target、userinfo、关联属性、强引用、父类的强引用（知道父类和父类的父类相等）、将NSTimer通过runloop获取上下文然后转换成_FBNSCFTimerInfoStruct结构体
 4.4 object allRetainObjects原理：关联属性、强引用、父类的强引用（知道父类和父类的父类相等）通过IvarLayout 来 识别什么是哪些是strong、哪些是weak
 4.5 如果ivar里有结构体，然后会扫描ivar的encode 获取结构体名字。以及结构体的各个变量及类型。
@@ -874,3 +874,13 @@ http://clang.llvm.org/docs/Block-ABI-Apple.html
 9
 10
 # 
+
+
+
+###结构体字节对齐
+首先几个概念：
+自身对齐值：成员中最大的一个对齐值。
+指定对齐值：#pragma pack(value) value指定的值 value 只能填1、2、4、8、16。
+有效对齐值：上述两个最小的那个。
+
+步骤首先确定cpu周期(看系统或编译器是多少位对齐的，一般除了4位就是8位了)、自身对齐值、指定对齐值。实际对齐值就是上面最小的。

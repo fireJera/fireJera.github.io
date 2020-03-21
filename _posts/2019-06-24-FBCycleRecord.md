@@ -884,3 +884,4 @@ http://clang.llvm.org/docs/Block-ABI-Apple.html
 有效对齐值：上述两个最小的那个。
 
 步骤首先确定cpu周期(看系统或编译器是多少位对齐的，一般除了4位就是8位了)、自身对齐值、指定对齐值。实际对齐值就是上面最小的。
+![IBM - 字节对齐](https://developer.ibm.com/articles/pa-dalign/)

@@ -116,8 +116,8 @@ DYLD_PRINT_LIBRARIES 打印加载顺序
 
 
 [optimizing App Startup Time-WWDC2016](https://developer.apple.com/videos/play/wwdc2016/406/?time=1536)
-[optimizing App Startup Time-WWDC2016](https://developer.apple.com/videos/play/wwdc2016/406/?time=1536)
-[optimizing App Startup Time-WWDC2016](https://developer.apple.com/videos/play/wwdc2016/406/?time=1536)
+[optimizing App Startup Time-WWDC2017](https://developer.apple.com/videos/play/wwdc2017/413/)
+[optimizing App Startup Time-WWDC2019](https://developer.apple.com/videos/play/wwdc2019/423/?time=2529)
 
 
 WWDC的视频分为两个大部分，第一个部分是了解启动时发生了什么，第二部分是如何去优化。
@@ -208,3 +208,18 @@ You also can have subtle deadlocking and undefined behaviors. Also, please don't
 
 
 
+
+[启动优化1](http://www.cocoachina.com/articles/24423)
+[启动优化2](https://blog.csdn.net/olsQ93038o99S/article/details/81518485)
+[How to accurately measure iOS App startup time](https://programmer.group/how-to-accurately-measure-ios-app-startup-time.html)
+[启动优化4](https://medium.com/@avijeet.dutta13/ios-app-launch-time-analysis-and-optimization-a219ee81447c)
+[启动优化5](https://medium.com/@michael.eisel/measuring-your-ios-apps-pre-main-time-in-the-wild-98197f3d95b4)
+[启动优化6](https://geek-is-stupid.github.io/2019-08-06-how-to-reduce-loading-time-by-using-staticlib-with-cocoapods/)
+[APM_bilibili](https://www.bilibili.com/video/av32230326)
+[APM_1](https://www.jianshu.com/c/7cd335edbaeb)
+[APM_崩溃时，你还可以做什么](https://www.jianshu.com/p/80268ee99ddf)
+[性能优化上](https://www.jianshu.com/p/9c450e512020)
+[性能优化中](https://www.jianshu.com/p/ad90e90dce4f)
+[性能监控方案上](http://www.cocoachina.com/articles/19680)
+[性能监控方案下](http://www.cocoachina.com/articles/19683)
+[Improving Your App's Performance](https://developer.apple.com/documentation/xcode/improving_your_app_s_performance?language=objc)
